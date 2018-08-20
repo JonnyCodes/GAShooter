@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/GA-Shooter.unity
+  isLoaded: 1
+  isActive: 1
