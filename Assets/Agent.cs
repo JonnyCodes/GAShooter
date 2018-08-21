@@ -4,35 +4,99 @@ using UnityEngine;
 
 public class Agent : MonoBehaviour {
 	public GameObject target;
-	private float maxVelocity;
-	private float maxSteering;
+	public GameObject avoid;
+	
+	[Range(0.01f, 0.2f)]
+	public float maxSteering; // This changes the distance between the "wheels" (Back 2 verts); Bigger = slower turning.
 	private Vector3 velocity;
+	private float maxVelocity;
+	private float health;
+	private float maxHealth;
+	private float attractForceWeight;
+	private float avoidForceWeight;
 
 	// Use this for initialization
 	void Start () {
 		velocity = Vector3.zero;
-		maxVelocity = 4.0f;
-		maxSteering = 0.1f;
+		maxVelocity = 4.0f; // TODO: this could be based on size/scale of the agent; Bigger agent = slower?
+		maxHealth = health = 10.0f; // TODO: This could be based on the size/scale of the agent; Bigger agent = More max health (Will need min and max)
+
+		// TODO: This should be calculated with graph/bezier functions with health and distance as parameters
+		// Look at AnimationCurves in the editor!
+		attractForceWeight = 0.75f;
+		avoidForceWeight = 0.25f; // Probably don't need avoid force! The attraction force will be between -1 and 1
+
+		// VVV Create agent polygon VVV
+		MeshFilter meshFilter = GetComponent<MeshFilter>();
+		Mesh agentMesh = new Mesh();
+		meshFilter.mesh = agentMesh;
+
+		Vector3[] verts = new Vector3[4];
+		verts[0] = new Vector3(-(maxSteering * 5.0f), 0.25f, 0.0f);
+		verts[1] = new Vector3(0.0f, -0.75f, 0.0f);
+		verts[2] = new Vector3(0.0f, 0.0f, 0.0f); // CENTER OF THE POLYGON
+		verts[3] = new Vector3((maxSteering * 5.0f), 0.25f, 0.0f);
+		agentMesh.vertices = verts;
+
+		int[] tris = new int[6];
+		tris[0] = 0;
+		tris[1] = 2;
+		tris[2] = 1;
+
+		tris[3] = 2;
+		tris[4] = 3;
+		tris[5] = 1;
+		agentMesh.triangles = tris;
+
+		Vector3[] normals = new Vector3[4];
+		normals[0] = -Vector3.forward;
+		normals[1] = -Vector3.forward;
+		normals[2] = -Vector3.forward;
+		normals[3] = -Vector3.forward;
+		agentMesh.normals = normals;
+
+		Vector2[] uvs = new Vector2[4];
+		uvs[0] = new Vector2(0.0f, 0.0f);
+		uvs[1] = new Vector2(1.0f, 0.0f);
+		uvs[2] = new Vector2(0.0f, 1.0f);
+		uvs[3] = new Vector2(1.0f, 1.0f);
+		agentMesh.uv = uvs;
+
+		// ^^^^^^^^^^^^^^^^^^^^^^
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		Seek();
+		Vector3 steeringForce = Seek(target) * attractForceWeight;
+		steeringForce += Flee(avoid) * avoidForceWeight;
+
+		if (steeringForce.sqrMagnitude > maxSteering * maxSteering) {
+			steeringForce.Normalize();
+			steeringForce *= maxSteering;
+		}
+
+		velocity = Vector3.ClampMagnitude(velocity + steeringForce, maxVelocity);
+
+		transform.position += (velocity * Time.deltaTime);
 	}
 
-	private void Seek() {
-		Vector3 desiredVelocity = Vector3.Normalize(target.transform.position - transform.position) * maxVelocity;
+	private Vector3 Seek(GameObject targetObj) {
+		Vector3 desiredVelocity = Vector3.Normalize(targetObj.transform.position - transform.position) * maxVelocity;
 		desiredVelocity.z = 0.0f;
 
 		Vector3 steering = desiredVelocity - velocity;
 		steering.z = 0.0f;
-		if (steering.sqrMagnitude > maxSteering * maxSteering) {
-			steering.Normalize();
-			steering *= maxSteering;
-		}
 
-		velocity += steering;
+		return steering;
+	}
 
-		transform.position += (velocity * Time.deltaTime);
+	private Vector3 Flee(GameObject targetObj) {
+		Vector3 desiredVelocity = Vector3.Normalize(transform.position - targetObj.transform.position) * maxVelocity;
+		desiredVelocity.z = 0.0f;
+
+		Vector3 steering = desiredVelocity - velocity;
+		steering.z = 0.0f;
+
+		return steering;
 	}
 }
