@@ -26,7 +26,7 @@ public class Agent : MonoBehaviour {
 		// TODO: This should be calculated with graph/bezier functions with health and distance as parameters
 		// Look at AnimationCurves in the editor!
 		attractForceWeight = 0.75f;
-		avoidForceWeight = 0.25f; // Probably don't need avoid force! The attraction force will be between -1 and 1
+		avoidForceWeight = -0.25f; // Probably don't need avoid force! The attraction force will be between -1 and 1
 
 		// VVV Create agent polygon VVV
 		MeshFilter meshFilter = GetComponent<MeshFilter>();
@@ -72,7 +72,7 @@ public class Agent : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Vector3 steeringForce = Seek(target) * attractForceWeight;
-		steeringForce += Flee(avoid) * avoidForceWeight;
+		steeringForce += Seek(avoid) * avoidForceWeight;
 
 		if (steeringForce.sqrMagnitude > maxSteering * maxSteering) {
 			steeringForce.Normalize();
@@ -82,6 +82,10 @@ public class Agent : MonoBehaviour {
 		velocity = Vector3.ClampMagnitude(velocity + steeringForce, maxVelocity);
 
 		transform.position += (velocity * Time.deltaTime);
+
+		float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
+		Quaternion q = Quaternion.AngleAxis(angle + 90, Vector3.forward);
+		transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * 10);
 	}
 
 	private Vector3 Seek(GameObject targetObj) {
