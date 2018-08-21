@@ -8,18 +8,20 @@ public class Agent : MonoBehaviour {
 	
 	[Range(0.01f, 0.2f)]
 	public float maxSteering; // This changes the distance between the "wheels" (Back 2 verts); Bigger = slower turning.
+	
+	[Range(0.1f, 5f)]
+	public float maxHealth; // This changes the agents scale and maxVelocity; more health = bigger & slower
 	private Vector3 velocity;
 	private float maxVelocity;
 	private float health;
-	private float maxHealth;
 	private float attractForceWeight;
 	private float avoidForceWeight;
 
 	// Use this for initialization
 	void Start () {
 		velocity = Vector3.zero;
-		maxVelocity = 4.0f; // TODO: this could be based on size/scale of the agent; Bigger agent = slower?
-		maxHealth = health = 10.0f; // TODO: This could be based on the size/scale of the agent; Bigger agent = More max health (Will need min and max)
+		maxVelocity = (6.0f - maxHealth) / 1.25f; // TODO: Don't like the magic numbers here
+		health = maxHealth;
 
 		// TODO: This should be calculated with graph/bezier functions with health and distance as parameters
 		// Look at AnimationCurves in the editor!
@@ -63,6 +65,8 @@ public class Agent : MonoBehaviour {
 		agentMesh.uv = uvs;
 
 		// ^^^^^^^^^^^^^^^^^^^^^^
+
+		transform.localScale = new Vector3(maxHealth, maxHealth, 1.0f);
 	}
 	
 	// Update is called once per frame
