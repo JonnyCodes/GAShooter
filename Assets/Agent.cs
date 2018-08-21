@@ -6,11 +6,12 @@ public class Agent : MonoBehaviour {
 	public GameObject target;
 	public GameObject avoid;
 	
-	[Range(0.01f, 0.2f)]
+	[Range(0.02f, 0.2f)]
 	public float maxSteering; // This changes the distance between the "wheels" (Back 2 verts); Bigger = slower turning.
 	
 	[Range(0.1f, 5f)]
 	public float maxHealth; // This changes the agents scale and maxVelocity; more health = bigger & slower
+
 	private Vector3 velocity;
 	private float maxVelocity;
 	private float health;
@@ -26,7 +27,7 @@ public class Agent : MonoBehaviour {
 		// TODO: This should be calculated with graph/bezier functions with health and distance as parameters
 		// Look at AnimationCurves in the editor!
 		attractForceWeight = 0.75f;
-		avoidForceWeight = -0.25f; // Probably don't need avoid force! The attraction force will be between -1 and 1
+		avoidForceWeight = -0.25f; // The attraction force will be between -1 and 1
 
 		// VVV Create agent polygon VVV
 		MeshFilter meshFilter = GetComponent<MeshFilter>();
@@ -34,10 +35,10 @@ public class Agent : MonoBehaviour {
 		meshFilter.mesh = agentMesh;
 
 		Vector3[] verts = new Vector3[4];
-		verts[0] = new Vector3(-(maxSteering * 5.0f), 0.25f, 0.0f);
+		verts[0] = new Vector3((-maxSteering / 2.0f) * 10.0f, 0.25f, 0.0f);
 		verts[1] = new Vector3(0.0f, -0.75f, 0.0f);
 		verts[2] = new Vector3(0.0f, 0.0f, 0.0f); // CENTER OF THE POLYGON
-		verts[3] = new Vector3((maxSteering * 5.0f), 0.25f, 0.0f);
+		verts[3] = new Vector3((maxSteering / 2.0f) * 10.0f, 0.25f, 0.0f);
 		agentMesh.vertices = verts;
 
 		int[] tris = new int[6];
@@ -90,16 +91,6 @@ public class Agent : MonoBehaviour {
 
 	private Vector3 Seek(GameObject targetObj) {
 		Vector3 desiredVelocity = Vector3.Normalize(targetObj.transform.position - transform.position) * maxVelocity;
-		desiredVelocity.z = 0.0f;
-
-		Vector3 steering = desiredVelocity - velocity;
-		steering.z = 0.0f;
-
-		return steering;
-	}
-
-	private Vector3 Flee(GameObject targetObj) {
-		Vector3 desiredVelocity = Vector3.Normalize(transform.position - targetObj.transform.position) * maxVelocity;
 		desiredVelocity.z = 0.0f;
 
 		Vector3 steering = desiredVelocity - velocity;
