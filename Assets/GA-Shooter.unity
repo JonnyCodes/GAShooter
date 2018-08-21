@@ -341,8 +341,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 879743977}
   avoid: {fileID: 135844977}
-  maxSteering: 0.117
-  maxHealth: 1.02
+  maxSteering: 0.03
+  maxHealth: 1
 --- !u!65 &1676246834
 BoxCollider:
   m_ObjectHideFlags: 0
