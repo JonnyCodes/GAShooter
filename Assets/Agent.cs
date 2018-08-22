@@ -6,12 +6,15 @@ public class Agent : MonoBehaviour {
 	public GameObject target;
 	public GameObject avoid;
 	
-	[Range(0.02f, 0.2f)]
+	[Range(1.0f, 10.0f)]
 	public float maxSteering; // This changes the distance between the "wheels" (Back 2 verts); Bigger = slower turning.
 	
-	[Range(0.1f, 5f)]
+	[Range(1f, 10f)]
 	public float maxHealth; // This changes the agents scale and maxVelocity; more health = bigger & slower
 
+	[Range(1f, 10f)]
+	public float visionRange; // This is the radius of perception circle
+	private CircleCollider2D visionCollider;
 	private Vector3 velocity;
 	private float maxVelocity;
 	private float health;
@@ -21,7 +24,7 @@ public class Agent : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		velocity = Vector3.zero;
-		maxVelocity = (6.0f - maxHealth) / 1.25f; // TODO: Don't like the magic numbers here
+		maxVelocity = (11f - maxHealth) / 1.25f; // TODO: Don't like the magic numbers here
 		health = maxHealth;
 
 		// TODO: This should be calculated with graph/bezier functions with health and distance as parameters
@@ -35,10 +38,10 @@ public class Agent : MonoBehaviour {
 		meshFilter.mesh = agentMesh;
 
 		Vector3[] verts = new Vector3[4];
-		verts[0] = new Vector3((-maxSteering / 2.0f) * 10.0f, 0.25f, 0.0f);
-		verts[1] = new Vector3(0.0f, -0.75f, 0.0f);
+		verts[0] = new Vector3((-maxSteering / 100.0f) * 10.0f, 0.25f, 0.0f);
+		verts[1] = new Vector3(0.0f, -maxHealth / 10.0f, 0.0f);
 		verts[2] = new Vector3(0.0f, 0.0f, 0.0f); // CENTER OF THE POLYGON
-		verts[3] = new Vector3((maxSteering / 2.0f) * 10.0f, 0.25f, 0.0f);
+		verts[3] = new Vector3((maxSteering / 100.0f) * 10.0f, 0.25f, 0.0f);
 		agentMesh.vertices = verts;
 
 		int[] tris = new int[6];
@@ -64,10 +67,11 @@ public class Agent : MonoBehaviour {
 		uvs[2] = new Vector2(0.0f, 1.0f);
 		uvs[3] = new Vector2(1.0f, 1.0f);
 		agentMesh.uv = uvs;
-
 		// ^^^^^^^^^^^^^^^^^^^^^^
 
-		transform.localScale = new Vector3(maxHealth, maxHealth, 1.0f);
+		visionCollider = GetComponent<CircleCollider2D>();
+		visionCollider.radius = visionRange / 2.0f;
+		visionCollider.offset = new Vector2(0.0f, -maxHealth / 20.0f);
 	}
 	
 	// Update is called once per frame
@@ -75,9 +79,9 @@ public class Agent : MonoBehaviour {
 		Vector3 steeringForce = Seek(target) * attractForceWeight;
 		steeringForce += Seek(avoid) * avoidForceWeight;
 
-		if (steeringForce.sqrMagnitude > maxSteering * maxSteering) {
+		if (steeringForce.sqrMagnitude > maxSteering / 100.0f * maxSteering / 100.0f) {
 			steeringForce.Normalize();
-			steeringForce *= maxSteering;
+			steeringForce *= maxSteering / 100.0f;
 		}
 
 		velocity = Vector3.ClampMagnitude(velocity + steeringForce, maxVelocity);
