@@ -15,6 +15,7 @@ public class Agent : MonoBehaviour {
 	[Range(1f, 10f)]
 	public float visionRange; // This is the radius of perception circle
 	private CircleCollider2D visionCollider;
+	private List<GameObject> targetsInRange;
 	private Vector3 velocity;
 	private float maxVelocity;
 	private float health;
@@ -72,10 +73,37 @@ public class Agent : MonoBehaviour {
 		visionCollider = GetComponent<CircleCollider2D>();
 		visionCollider.radius = visionRange / 2.0f;
 		visionCollider.offset = new Vector2(0.0f, -maxHealth / 20.0f);
+
+		targetsInRange = new List<Collider2D>();
+
+		// TODO: Get all objects in visual range
+		// Apply seek force to all of them?
+		// Adjust force by weights
+		// Need random wander behaviour, if no objects in visual range
+		// SHOOTING?!?!
+	}
+
+	void OnTriggerEnter(Collider target) {
+		if (!targetsInRange.Contains(target.gameObject)) {
+			targetsInRange.Add(target.gameObject);
+		}
+	}
+
+	void OnTriggerEXit(Collider target) {
+		if (targetsInRange.Contains(target.gameObject)) {
+			targetsInRange.Remove(target.gameObject);
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+		if (targetsInRange.Count > 0) {
+			foreach (GameObject target in targetsInRange) {
+				// Get Type of object to apply the correct force to it
+			}
+		}
+
 		Vector3 steeringForce = Seek(target) * attractForceWeight;
 		steeringForce += Seek(avoid) * avoidForceWeight;
 
