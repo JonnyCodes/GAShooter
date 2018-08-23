@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Agent : MonoBehaviour {
-	public GameObject target;
-	public GameObject avoid;
-	
 
 	[Range(1.0f, 10.0f)]
 	public float maxSteering; // This changes the distance between the "wheels" (Back 2 verts); Bigger = slower turning.
@@ -87,7 +84,6 @@ public class Agent : MonoBehaviour {
 			pickupHealthAttractionCurve.AddKey(i * (1.0f / keyframes.Length), 0.5f);
 			pickupDistanceAttractionCurve.AddKey(i * (1.0f / keyframes.Length), 0.5f);
 		}
-		 
 
 		// TODO: Get all objects in visual range
 		// Apply seek force to all of them?
@@ -99,7 +95,7 @@ public class Agent : MonoBehaviour {
 	float forceCalc(float attribute, List<float> multipliers) {
 		float force = 0;
 		for (int i = 0; i < multipliers.Count; i++) {
-			force += multipliers[i] * Mathf.Pow(attribute, i + 1.0f);
+			force += multipliers[i] * Mathf.Pow(attribute, i);
 		}
 		return force;
 	}
@@ -119,14 +115,22 @@ public class Agent : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		Vector3 steeringForce = Vector3.right;
+
 		if (targetsInRange.Count > 0) {
 			foreach (GameObject target in targetsInRange) {
-				// Get Type of object to apply the correct force to it
+				switch (target.tag) {
+					case "avoid":
+						steeringForce += Seek(target) * avoidForceWeight;
+					break;
+
+					case "attract":
+						steeringForce += Seek(target) * attractForceWeight;
+					break;
+				}
 			}
 		}
-
-		Vector3 steeringForce = Seek(target) * attractForceWeight;
-		steeringForce += Seek(avoid) * avoidForceWeight;
+		
 
 		if (steeringForce.sqrMagnitude > maxSteering / 100.0f * maxSteering / 100.0f) {
 			steeringForce.Normalize();
