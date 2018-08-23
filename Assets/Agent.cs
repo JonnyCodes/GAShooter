@@ -16,6 +16,7 @@ public class Agent : MonoBehaviour {
 	[Range(1f, 10f)]
 	public float visionRange; // This is the radius of perception circle
 
+	public AnimationCurve pickupHealthAttraction;
 	private CircleCollider2D visionCollider;
 	private List<GameObject> targetsInRange;
 	private Vector3 velocity;
@@ -77,6 +78,12 @@ public class Agent : MonoBehaviour {
 		visionCollider.offset = new Vector2(0.0f, -maxHealth / 20.0f);
 
 		targetsInRange = new List<GameObject>();
+
+		Keyframe[] keyframes = new Keyframe[4];
+
+		for (int i = 0; i < keyframes.Length; i++) {
+			keyframes[i] = new Keyframe(i * (1.0f / keyframes.Length), 0.5f);
+		}
 
 		// TODO: Get all objects in visual range
 		// Apply seek force to all of them?
