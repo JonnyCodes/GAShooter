@@ -16,7 +16,8 @@ public class Agent : MonoBehaviour {
 	[Range(1f, 10f)]
 	public float visionRange; // This is the radius of perception circle
 
-	public AnimationCurve pickupHealthAttraction;
+	public AnimationCurve pickupHealthAttractionCurve;
+	public AnimationCurve pickupDistanceAttractionCurve;
 	private CircleCollider2D visionCollider;
 	private List<GameObject> targetsInRange;
 	private Vector3 velocity;
@@ -79,17 +80,28 @@ public class Agent : MonoBehaviour {
 
 		targetsInRange = new List<GameObject>();
 
-		Keyframe[] keyframes = new Keyframe[4];
-
+		pickupHealthAttractionCurve = new AnimationCurve();
+		pickupDistanceAttractionCurve = new AnimationCurve();
+		Keyframe[] keyframes = new Keyframe[5];
 		for (int i = 0; i < keyframes.Length; i++) {
-			keyframes[i] = new Keyframe(i * (1.0f / keyframes.Length), 0.5f);
+			pickupHealthAttractionCurve.AddKey(i * (1.0f / keyframes.Length), 0.5f);
+			pickupDistanceAttractionCurve.AddKey(i * (1.0f / keyframes.Length), 0.5f);
 		}
+		 
 
 		// TODO: Get all objects in visual range
 		// Apply seek force to all of them?
 		// Adjust force by weights
 		// Need random wander behaviour, if no objects in visual range
 		// SHOOTING?!?!
+	}
+
+	float forceCalc(float attribute, List<float> multipliers) {
+		float force = 0;
+		for (int i = 0; i < multipliers.Count; i++) {
+			force += multipliers[i] * Mathf.Pow(attribute, i + 1.0f);
+		}
+		return force;
 	}
 
 	void OnTriggerEnter(Collider target) {
