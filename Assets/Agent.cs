@@ -27,8 +27,6 @@ public class Agent : MonoBehaviour {
 	[Range(-5.0f, 5.0f)]
 	public float avoidMultiplier3;
 
-	public AnimationCurve pickupHealthAttractionCurve;
-	public AnimationCurve pickupDistanceAttractionCurve;
 	private CircleCollider2D visionCollider;
 	private Vector3 velocity;
 	private float maxVelocity;
@@ -87,15 +85,6 @@ public class Agent : MonoBehaviour {
 		visionCollider = GetComponent<CircleCollider2D>();
 		visionCollider.radius = visionRange / 2.0f;
 		visionCollider.offset = new Vector2(0.0f, -maxHealth / 20.0f);
-
-		pickupHealthAttractionCurve = new AnimationCurve();
-		pickupDistanceAttractionCurve = new AnimationCurve();
-		Keyframe[] keyframes = new Keyframe[5];
-		for (int i = 0; i < keyframes.Length; i++) {
-			// TODO: Evolve the values!
-			pickupHealthAttractionCurve.AddKey(i * (1.0f / keyframes.Length), 0.5f);
-			pickupDistanceAttractionCurve.AddKey(i * (1.0f / keyframes.Length), 0.5f);
-		}
 	}
 
 	float ForceCalc(float attribute, List<float> multipliers) {
@@ -128,16 +117,14 @@ public class Agent : MonoBehaviour {
 				switch (target.tag) {
 					case "avoid":
 						float avoidHealthForce = ForceCalc(health, new List<float> { avoidMultiplier1, avoidMultiplier2, avoidMultiplier3 });
-						avoidHealthForce /= ForceCalc(maxHealth, new List<float> { avoidMultiplier1, avoidMultiplier2, avoidMultiplier3 });
-						avoidHealthForce = avoidHealthForce * 2.0f - 1.0f; // Clamp between -1 and 1
+						avoidHealthForce /= ForceCalc(maxHealth, new List<float> { 5, 5, 5 });
 
 						steeringForce += Seek(target) * avoidHealthForce;
 					break;
 
 					case "attract":
 						float attractHealthForce = ForceCalc(health, new List<float> { attactMultiplier1, attactMultiplier2, attactMultiplier3 });
-						attractHealthForce /= ForceCalc(maxHealth, new List<float> { attactMultiplier1, attactMultiplier2, attactMultiplier3 });
-						attractHealthForce = attractHealthForce * 2.0f - 1.0f; // Clamp between -1 and 1
+						attractHealthForce /= ForceCalc(maxHealth, new List<float> { 5, 5, 5 });
 
 						steeringForce += Seek(target) * attractHealthForce;
 					break;
