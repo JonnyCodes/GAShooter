@@ -119,26 +119,32 @@ public class Agent : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		List<GameObject[]> targetsInRange = GetTargetsInRange();
+		GameObject[] targetsInRange = GameObject.FindGameObjectsWithTag("attract");
 
 		Vector3 steeringForce = Vector3.zero;
 
-		if (targetsInRange.Count > 0) {
-			foreach (GameObject[] list in targetsInRange) {
-				foreach (GameObject target in list) {
-					switch (target.tag) {
-						case "avoid":
-							steeringForce += Seek(target) * ForceCalc(health, new List<float> { avoidMultiplier1, avoidMultiplier2, avoidMultiplier3 });
-						break;
+		if (targetsInRange.Length > 0) {
+			foreach (GameObject target in targetsInRange) {
+				switch (target.tag) {
+					case "avoid":
+						float avoidHealthForce = ForceCalc(health, new List<float> { avoidMultiplier1, avoidMultiplier2, avoidMultiplier3 });
+						avoidHealthForce /= ForceCalc(maxHealth, new List<float> { avoidMultiplier1, avoidMultiplier2, avoidMultiplier3 });
+						avoidHealthForce = avoidHealthForce * 2.0f - 1.0f; // Clamp between -1 and 1
 
-						case "attract":
-							steeringForce += Seek(target) * ForceCalc(health, new List<float> { attactMultiplier1, attactMultiplier2, attactMultiplier3 });
-						break;
+						steeringForce += Seek(target) * avoidHealthForce;
+					break;
 
-						default:
-							steeringForce += Seek(target);
-						break;
-					}
+					case "attract":
+						float attractHealthForce = ForceCalc(health, new List<float> { attactMultiplier1, attactMultiplier2, attactMultiplier3 });
+						attractHealthForce /= ForceCalc(maxHealth, new List<float> { attactMultiplier1, attactMultiplier2, attactMultiplier3 });
+						attractHealthForce = attractHealthForce * 2.0f - 1.0f; // Clamp between -1 and 1
+
+						steeringForce += Seek(target) * attractHealthForce;
+					break;
+
+					default:
+						steeringForce += Seek(target);
+					break;
 				}
 			}
 		} else {

@@ -158,11 +158,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe110d215214ded47adffd1aeecee92b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSteering: 1
-  maxHealth: 10
+  maxSteering: 0.38
+  maxHealth: 3.37
   visionRange: 10
   attactMultiplier1: 0
-  attactMultiplier2: 0
+  attactMultiplier2: -0.57
   attactMultiplier3: 0
   avoidMultiplier1: 0
   avoidMultiplier2: 0
