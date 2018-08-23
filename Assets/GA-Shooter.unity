@@ -158,11 +158,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe110d215214ded47adffd1aeecee92b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1371485139}
-  avoid: {fileID: 157009527}
   maxSteering: 1
   maxHealth: 10
   visionRange: 10
+  attactMultiplier1: 0
+  attactMultiplier2: 0
+  attactMultiplier3: 0
+  avoidMultiplier1: 0
+  avoidMultiplier2: 0
+  avoidMultiplier3: 0
   pickupHealthAttractionCurve:
     serializedVersion: 2
     m_Curve: []

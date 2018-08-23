@@ -26,6 +26,8 @@ public class RandomPoint : MonoBehaviour {
 				)
 			);
 
+			newPos.z = 0;
+
 			gameObject.transform.position = newPos;
 		}
 	}

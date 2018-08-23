@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Agent : MonoBehaviour {
 
-	[Range(1.0f, 10.0f)]
+	[Range(0.01f, 1.0f)]
 	public float maxSteering; // This changes the distance between the "wheels" (Back 2 verts); Bigger = slower turning.
 	
 	[Range(1f, 10f)]
@@ -13,10 +13,23 @@ public class Agent : MonoBehaviour {
 	[Range(1f, 10f)]
 	public float visionRange; // This is the radius of perception circle
 
+	[Range(-5.0f, 5.0f)]
+	public float attactMultiplier1;
+	[Range(-5.0f, 5.0f)]
+	public float attactMultiplier2;
+	[Range(-5.0f, 5.0f)]
+	public float attactMultiplier3;
+
+	[Range(-5.0f, 5.0f)]
+	public float avoidMultiplier1;
+	[Range(-5.0f, 5.0f)]
+	public float avoidMultiplier2;
+	[Range(-5.0f, 5.0f)]
+	public float avoidMultiplier3;
+
 	public AnimationCurve pickupHealthAttractionCurve;
 	public AnimationCurve pickupDistanceAttractionCurve;
 	private CircleCollider2D visionCollider;
-	private List<GameObject> targetsInRange;
 	private Vector3 velocity;
 	private float maxVelocity;
 	private float health;
@@ -40,10 +53,10 @@ public class Agent : MonoBehaviour {
 		meshFilter.mesh = agentMesh;
 
 		Vector3[] verts = new Vector3[4];
-		verts[0] = new Vector3((-maxSteering / 50.0f) * 5.0f, 0.15f, 0.0f);
+		verts[0] = new Vector3(-maxSteering, 0.15f, 0.0f);
 		verts[1] = new Vector3(0.0f, (-maxHealth / 10.0f) - 0.15f, 0.0f);
 		verts[2] = new Vector3(0.0f, 0.0f, 0.0f); // CENTER OF THE POLYGON
-		verts[3] = new Vector3((maxSteering / 50.0f) * 5.0f, 0.15f, 0.0f);
+		verts[3] = new Vector3(maxSteering, 0.15f, 0.0f);
 		agentMesh.vertices = verts;
 
 		int[] tris = new int[6];
@@ -75,24 +88,17 @@ public class Agent : MonoBehaviour {
 		visionCollider.radius = visionRange / 2.0f;
 		visionCollider.offset = new Vector2(0.0f, -maxHealth / 20.0f);
 
-		targetsInRange = new List<GameObject>();
-
 		pickupHealthAttractionCurve = new AnimationCurve();
 		pickupDistanceAttractionCurve = new AnimationCurve();
 		Keyframe[] keyframes = new Keyframe[5];
 		for (int i = 0; i < keyframes.Length; i++) {
+			// TODO: Evolve the values!
 			pickupHealthAttractionCurve.AddKey(i * (1.0f / keyframes.Length), 0.5f);
 			pickupDistanceAttractionCurve.AddKey(i * (1.0f / keyframes.Length), 0.5f);
 		}
-
-		// TODO: Get all objects in visual range
-		// Apply seek force to all of them?
-		// Adjust force by weights
-		// Need random wander behaviour, if no objects in visual range
-		// SHOOTING?!?!
 	}
 
-	float forceCalc(float attribute, List<float> multipliers) {
+	float ForceCalc(float attribute, List<float> multipliers) {
 		float force = 0;
 		for (int i = 0; i < multipliers.Count; i++) {
 			force += multipliers[i] * Mathf.Pow(attribute, i);
@@ -100,41 +106,51 @@ public class Agent : MonoBehaviour {
 		return force;
 	}
 
-	void OnTriggerEnter(Collider target) {
-		if (!targetsInRange.Contains(target.gameObject)) {
-			targetsInRange.Add(target.gameObject);
-		}
-	}
+	List<GameObject[]> GetTargetsInRange() {
+		List<GameObject[]> targets = new List<GameObject[]>();
 
-	void OnTriggerEXit(Collider target) {
-		if (targetsInRange.Contains(target.gameObject)) {
-			targetsInRange.Remove(target.gameObject);
-		}
+		// TODO: FILTER BY RANGE!!!
+		targets.Add(GameObject.FindGameObjectsWithTag("attract"));
+		targets.Add(GameObject.FindGameObjectsWithTag("avoid"));
+
+		return targets;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		Vector3 steeringForce = Vector3.right;
+		List<GameObject[]> targetsInRange = GetTargetsInRange();
+
+		Vector3 steeringForce = Vector3.zero;
 
 		if (targetsInRange.Count > 0) {
-			foreach (GameObject target in targetsInRange) {
-				switch (target.tag) {
-					case "avoid":
-						steeringForce += Seek(target) * avoidForceWeight;
-					break;
+			foreach (GameObject[] list in targetsInRange) {
+				foreach (GameObject target in list) {
+					switch (target.tag) {
+						case "avoid":
+							steeringForce += Seek(target) * ForceCalc(health, new List<float> { avoidMultiplier1, avoidMultiplier2, avoidMultiplier3 });
+						break;
 
-					case "attract":
-						steeringForce += Seek(target) * attractForceWeight;
-					break;
+						case "attract":
+							steeringForce += Seek(target) * ForceCalc(health, new List<float> { attactMultiplier1, attactMultiplier2, attactMultiplier3 });
+						break;
+
+						default:
+							steeringForce += Seek(target);
+						break;
+					}
 				}
 			}
+		} else {
+			// TODO: Improve this!
+			steeringForce += RandomSeek();
 		}
-		
 
-		if (steeringForce.sqrMagnitude > maxSteering / 100.0f * maxSteering / 100.0f) {
+		// SHOOTING?!?!?!
+
+		if (steeringForce.sqrMagnitude > maxSteering * maxSteering) {
 			steeringForce.Normalize();
-			steeringForce *= maxSteering / 100.0f;
+			steeringForce *= maxSteering;
 		}
 
 		velocity = Vector3.ClampMagnitude(velocity + steeringForce, maxVelocity);
@@ -148,6 +164,24 @@ public class Agent : MonoBehaviour {
 
 	private Vector3 Seek(GameObject targetObj) {
 		Vector3 desiredVelocity = Vector3.Normalize(targetObj.transform.position - transform.position) * maxVelocity;
+		desiredVelocity.z = 0.0f;
+
+		Vector3 steering = desiredVelocity - velocity;
+		steering.z = 0.0f;
+
+		return steering;
+	}
+
+	private Vector3 RandomSeek() {
+		Vector3 newPos = Camera.main.ScreenToWorldPoint(
+				new Vector3(
+					Random.Range(0, Screen.width),
+					Random.Range(0, Screen.height),
+					10.0f
+				)
+			);
+		newPos.z = 0;
+		Vector3 desiredVelocity = Vector3.Normalize(newPos - transform.position) * maxVelocity;
 		desiredVelocity.z = 0.0f;
 
 		Vector3 steering = desiredVelocity - velocity;
