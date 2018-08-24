@@ -160,25 +160,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSteering: 0.5
   maxHealth: 5
-  visionRange: 10
-  attactMultiplier1: 0
-  attactMultiplier2: 0
-  attactMultiplier3: 0
-  avoidMultiplier1: 0
-  avoidMultiplier2: 0
-  avoidMultiplier3: 0
-  pickupHealthAttractionCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  pickupDistanceAttractionCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  visionRadius: 4.99
+  pickupForceData:
+    pickupForceCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    pickupForceKey1: 1
+    pickupForceKey2: 0.823
+    pickupForceKey3: 0.701
+    pickupForceKey4: 0.571
+  avoidForceData:
+    avoidForceCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    avoidForceKey1: 0
+    avoidForceKey2: 0.122
+    avoidForceKey3: 0.249
+    avoidForceKey4: 0.412
 --- !u!23 &141387291
 MeshRenderer:
   m_ObjectHideFlags: 0

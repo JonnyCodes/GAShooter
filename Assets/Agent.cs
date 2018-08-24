@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Agent : MonoBehaviour {
 
@@ -10,40 +11,49 @@ public class Agent : MonoBehaviour {
 	[Range(1f, 10f)]
 	public float maxHealth; // This changes the agents scale and maxVelocity; more health = bigger & slower
 
-	[Range(1f, 10f)]
-	public float visionRange; // This is the radius of perception circle
+	[Range(1f, 5f)]
+	public float visionRadius; // This is the radius of perception circle
 
-	[Range(-5.0f, 5.0f)]
-	public float attactMultiplier1;
-	[Range(-5.0f, 5.0f)]
-	public float attactMultiplier2;
-	[Range(-5.0f, 5.0f)]
-	public float attactMultiplier3;
+	[System.Serializable]
+	public class PickupForceData {
+		public AnimationCurve pickupForceCurve;
 
-	[Range(-5.0f, 5.0f)]
-	public float avoidMultiplier1;
-	[Range(-5.0f, 5.0f)]
-	public float avoidMultiplier2;
-	[Range(-5.0f, 5.0f)]
-	public float avoidMultiplier3;
+		[Range(0.0f, 1.0f)]
+		public float pickupForceKey1;
+		[Range(0.0f, 1.0f)]
+		public float pickupForceKey2;
+		[Range(0.0f, 1.0f)]
+		public float pickupForceKey3;
+		[Range(0.0f, 1.0f)]
+		public float pickupForceKey4;
+	}
+	public PickupForceData pickupForceData;
+	
+	[System.Serializable]
+	public class AvoidForceData {
+		public AnimationCurve avoidForceCurve;
+
+		[Range(0.0f, 1.0f)]
+		public float avoidForceKey1;
+		[Range(0.0f, 1.0f)]
+		public float avoidForceKey2;
+		[Range(0.0f, 1.0f)]
+		public float avoidForceKey3;
+		[Range(0.0f, 1.0f)]
+		public float avoidForceKey4;
+	}
+	public AvoidForceData avoidForceData;
 
 	private CircleCollider2D visionCollider;
 	private Vector3 velocity;
 	private float maxVelocity;
 	private float health;
-	private float attractForceWeight;
-	private float avoidForceWeight;
 
 	// Use this for initialization
 	void Start () {
 		velocity = Vector3.zero;
 		maxVelocity = (11.0f - maxHealth) / 1.25f; // TODO: Don't like the magic numbers here
 		health = maxHealth;
-
-		// TODO: This should be calculated with graph/bezier functions with health and distance as parameters
-		// Look at AnimationCurves in the editor!
-		attractForceWeight = 0.75f;
-		avoidForceWeight = -0.25f; // The attraction force will be between -1 and 1
 
 		// VVV Create agent polygon VVV
 		MeshFilter meshFilter = GetComponent<MeshFilter>();
@@ -83,24 +93,36 @@ public class Agent : MonoBehaviour {
 		// ^^^^^^^^^^^^^^^^^^^^^^
 
 		visionCollider = GetComponent<CircleCollider2D>();
-		visionCollider.radius = visionRange / 2.0f;
+		visionCollider.radius = visionRadius;
 		visionCollider.offset = new Vector2(0.0f, -maxHealth / 20.0f);
+
+		// vvvvv Setup force curves vvvvv
+		float[] pickupforces = new float[] {pickupForceData.pickupForceKey1, pickupForceData.pickupForceKey2, pickupForceData.pickupForceKey3, pickupForceData.pickupForceKey4};
+		pickupForceData.pickupForceCurve = setupForceCurves(pickupforces);
+
+		float[] avoidforces = new float[] {avoidForceData.avoidForceKey1, avoidForceData.avoidForceKey2, avoidForceData.avoidForceKey3, avoidForceData.avoidForceKey4};
+		avoidForceData.avoidForceCurve = setupForceCurves(avoidforces);
+		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	}
 
-	float ForceCalc(float attribute, List<float> multipliers) {
-		float force = 0;
-		for (int i = 0; i < multipliers.Count; i++) {
-			force += multipliers[i] * Mathf.Pow(attribute, i);
+	AnimationCurve setupForceCurves(float[] keyframeForces) {
+		AnimationCurve curve = new AnimationCurve();
+
+		for (int i = 0; i < keyframeForces.Length; i++) {
+			curve.AddKey(i * (1.0f / keyframeForces.Length), keyframeForces[i]);
 		}
-		return force;
+
+		return curve;
 	}
 
-	List<GameObject[]> GetTargetsInRange() {
-		List<GameObject[]> targets = new List<GameObject[]>();
+	List<GameObject> GetTargetsInRange() {
+		List<GameObject> targets = GameObject.FindGameObjectsWithTag("attract").Concat(GameObject.FindGameObjectsWithTag("avoid")).ToList();
 
-		// TODO: FILTER BY RANGE!!!
-		targets.Add(GameObject.FindGameObjectsWithTag("attract"));
-		targets.Add(GameObject.FindGameObjectsWithTag("avoid"));
+		for (int i = targets.Count - 1; i >= 0; i--) {
+			if ((targets[i].transform.position - transform.position).sqrMagnitude > visionRadius * visionRadius) {
+				targets.RemoveAt(i);
+			}
+		}
 
 		return targets;
 	}
@@ -108,23 +130,23 @@ public class Agent : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		GameObject[] targetsInRange = GameObject.FindGameObjectsWithTag("attract");
+		List<GameObject> targetsInRange = GetTargetsInRange();
 
 		Vector3 steeringForce = Vector3.zero;
 
-		if (targetsInRange.Length > 0) {
+		if (targetsInRange.Count > 0) {
 			foreach (GameObject target in targetsInRange) {
 				switch (target.tag) {
 					case "avoid":
-						float avoidHealthForce = ForceCalc(health, new List<float> { avoidMultiplier1, avoidMultiplier2, avoidMultiplier3 });
-						avoidHealthForce /= ForceCalc(maxHealth, new List<float> { 5, 5, 5 });
+						float avoidHealthForce = avoidForceData.avoidForceCurve.Evaluate(health / maxHealth);
+						avoidHealthForce = avoidHealthForce * 2 - 1; // Clamp between -1 & 1
 
 						steeringForce += Seek(target) * avoidHealthForce;
 					break;
 
 					case "attract":
-						float attractHealthForce = ForceCalc(health, new List<float> { attactMultiplier1, attactMultiplier2, attactMultiplier3 });
-						attractHealthForce /= ForceCalc(maxHealth, new List<float> { 5, 5, 5 });
+						float attractHealthForce = pickupForceData.pickupForceCurve.Evaluate(health / maxHealth);
+						attractHealthForce = attractHealthForce * 2 - 1; // Clamp between -1 & 1
 
 						steeringForce += Seek(target) * attractHealthForce;
 					break;
