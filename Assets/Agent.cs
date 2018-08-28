@@ -54,7 +54,8 @@ public class Agent : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		velocity = Vector3.zero;
+		float randStartVelocity = Random.value;
+		velocity = randStartVelocity > 0.25f ? Vector3.up : randStartVelocity > 0.5 ? Vector3.left : randStartVelocity > 0.75 ? Vector3.down : Vector3.right;
 		maxVelocity = (11.0f - maxHealth) / 1.25f; // TODO: Don't like the magic numbers here
 		health = maxHealth;
 

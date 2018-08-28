@@ -160,7 +160,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSteering: 0.5
   maxHealth: 5
-  visionRadius: 4.99
+  visionRadius: 2.84
   pickupForceData:
     pickupForceCurve:
       serializedVersion: 2
