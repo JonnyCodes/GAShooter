@@ -49,13 +49,16 @@ public class Agent : MonoBehaviour {
 	private float maxVelocity;
 	private float health;
 
+	private Vector3 minScreenBounds;
+	private Vector3 maxScreenBounds;
+
 	// Use this for initialization
 	void Start () {
 		velocity = Vector3.zero;
 		maxVelocity = (11.0f - maxHealth) / 1.25f; // TODO: Don't like the magic numbers here
 		health = maxHealth;
 
-		// VVV Create agent polygon VVV
+		// vvvvv Create agent polygon vvvvv
 		MeshFilter meshFilter = GetComponent<MeshFilter>();
 		Mesh agentMesh = new Mesh();
 		meshFilter.mesh = agentMesh;
@@ -103,6 +106,9 @@ public class Agent : MonoBehaviour {
 		float[] avoidforces = new float[] {avoidForceData.avoidForceKey1, avoidForceData.avoidForceKey2, avoidForceData.avoidForceKey3, avoidForceData.avoidForceKey4};
 		avoidForceData.avoidForceCurve = setupForceCurves(avoidforces);
 		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+		minScreenBounds = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0));
+		maxScreenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
 	}
 
 	AnimationCurve setupForceCurves(float[] keyframeForces) {
@@ -157,7 +163,6 @@ public class Agent : MonoBehaviour {
 				}
 			}
 		} else {
-			// TODO: Improve this!
 			steeringForce += RandomSeek();
 		}
 
@@ -188,15 +193,17 @@ public class Agent : MonoBehaviour {
 	}
 
 	private Vector3 RandomSeek() {
-		Vector3 newPos = Camera.main.ScreenToWorldPoint(
-				new Vector3(
-					Random.Range(0, Screen.width),
-					Random.Range(0, Screen.height),
-					10.0f
-				)
-			);
-		newPos.z = 0;
-		Vector3 desiredVelocity = Vector3.Normalize(newPos - transform.position) * maxVelocity;
+
+		Vector3 desiredVelocity = Vector3.zero;
+
+		if (transform.position.x < minScreenBounds.x || transform.position.x > maxScreenBounds.x || transform.position.y < minScreenBounds.y || transform.position.y > maxScreenBounds.y) {
+			// Head towards the center of the screen if outside the screen bounds
+			desiredVelocity = Vector3.Normalize(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, 0)) - transform.position) * maxVelocity;
+		} else {
+			desiredVelocity = Vector3.Normalize(velocity - transform.position) * maxVelocity;
+			desiredVelocity = Quaternion.AngleAxis(Random.value > 0.5 ? 25 : -25, Vector3.forward) * desiredVelocity;
+		}
+
 		desiredVelocity.z = 0.0f;
 
 		Vector3 steering = desiredVelocity - velocity;
