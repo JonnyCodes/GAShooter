@@ -184,6 +184,17 @@ MonoBehaviour:
       pickupDistanceForceKey2: 0
       pickupDistanceForceKey3: 0
       pickupDistanceForceKey4: 0
+    pickupDirectionForce:
+      pickupDirectionForceCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      pickupDirectionForceKey1: 0
+      pickupDirectionForceKey2: 0
+      pickupDirectionForceKey3: 0
+      pickupDirectionForceKey4: 0
   avoidForceData:
     avoidHealthForce:
       avoidHealthForceCurve:
@@ -207,6 +218,17 @@ MonoBehaviour:
       avoidDistanceForceKey2: 0.476
       avoidDistanceForceKey3: 0.522
       avoidDistanceForceKey4: 0.534
+    avoidDirectionForce:
+      avoidDirectionForceCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      avoidDirectionForceKey1: 0
+      avoidDirectionForceKey2: 0
+      avoidDirectionForceKey3: 0
+      avoidDirectionForceKey4: 0
 --- !u!23 &141387291
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -529,6 +551,17 @@ MonoBehaviour:
       pickupDistanceForceKey2: 0
       pickupDistanceForceKey3: 0
       pickupDistanceForceKey4: 0
+    pickupDirectionForce:
+      pickupDirectionForceCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      pickupDirectionForceKey1: 0
+      pickupDirectionForceKey2: 0
+      pickupDirectionForceKey3: 0
+      pickupDirectionForceKey4: 0
   avoidForceData:
     avoidHealthForce:
       avoidHealthForceCurve:
@@ -552,6 +585,17 @@ MonoBehaviour:
       avoidDistanceForceKey2: 0.476
       avoidDistanceForceKey3: 0.522
       avoidDistanceForceKey4: 0.534
+    avoidDirectionForce:
+      avoidDirectionForceCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      avoidDirectionForceKey1: 0
+      avoidDirectionForceKey2: 0
+      avoidDirectionForceKey3: 0
+      avoidDirectionForceKey4: 0
 --- !u!23 &370271578
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -678,6 +722,17 @@ MonoBehaviour:
       pickupDistanceForceKey2: 0
       pickupDistanceForceKey3: 0
       pickupDistanceForceKey4: 0
+    pickupDirectionForce:
+      pickupDirectionForceCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      pickupDirectionForceKey1: 0
+      pickupDirectionForceKey2: 0
+      pickupDirectionForceKey3: 0
+      pickupDirectionForceKey4: 0
   avoidForceData:
     avoidHealthForce:
       avoidHealthForceCurve:
@@ -701,6 +756,17 @@ MonoBehaviour:
       avoidDistanceForceKey2: 0.476
       avoidDistanceForceKey3: 0.522
       avoidDistanceForceKey4: 0.534
+    avoidDirectionForce:
+      avoidDirectionForceCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      avoidDirectionForceKey1: 0
+      avoidDirectionForceKey2: 0
+      avoidDirectionForceKey3: 0
+      avoidDirectionForceKey4: 0
 --- !u!23 &383411487
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -925,6 +991,17 @@ MonoBehaviour:
       pickupDistanceForceKey2: 0
       pickupDistanceForceKey3: 0
       pickupDistanceForceKey4: 0
+    pickupDirectionForce:
+      pickupDirectionForceCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      pickupDirectionForceKey1: 0
+      pickupDirectionForceKey2: 0
+      pickupDirectionForceKey3: 0
+      pickupDirectionForceKey4: 0
   avoidForceData:
     avoidHealthForce:
       avoidHealthForceCurve:
@@ -948,6 +1025,17 @@ MonoBehaviour:
       avoidDistanceForceKey2: 0.476
       avoidDistanceForceKey3: 0.522
       avoidDistanceForceKey4: 0.534
+    avoidDirectionForce:
+      avoidDirectionForceCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      avoidDirectionForceKey1: 0
+      avoidDirectionForceKey2: 0
+      avoidDirectionForceKey3: 0
+      avoidDirectionForceKey4: 0
 --- !u!23 &904173837
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1149,7 +1237,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 20
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
