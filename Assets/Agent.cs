@@ -16,31 +16,71 @@ public class Agent : MonoBehaviour {
 
 	[System.Serializable]
 	public class PickupForceData {
-		public AnimationCurve pickupForceCurve;
+		
+		[System.Serializable]
+		public class PickupHealthForce {
+			public AnimationCurve pickupHealthForceCurve;
 
-		[Range(0.0f, 1.0f)]
-		public float pickupForceKey1;
-		[Range(0.0f, 1.0f)]
-		public float pickupForceKey2;
-		[Range(0.0f, 1.0f)]
-		public float pickupForceKey3;
-		[Range(0.0f, 1.0f)]
-		public float pickupForceKey4;
+			[Range(0.0f, 1.0f)]
+			public float pickupHealthForceKey1;
+			[Range(0.0f, 1.0f)]
+			public float pickupHealthForceKey2;
+			[Range(0.0f, 1.0f)]
+			public float pickupHealthForceKey3;
+			[Range(0.0f, 1.0f)]
+			public float pickupHealthForceKey4;
+		}
+		public PickupHealthForce pickupHealthForce;
+
+		[System.Serializable]
+		public class PickupDistanceForce {
+			public AnimationCurve pickupDistanceForceCurve;
+
+			[Range(0.0f, 1.0f)]
+			public float pickupDistanceForceKey1;
+			[Range(0.0f, 1.0f)]
+			public float pickupDistanceForceKey2;
+			[Range(0.0f, 1.0f)]
+			public float pickupDistanceForceKey3;
+			[Range(0.0f, 1.0f)]
+			public float pickupDistanceForceKey4;
+		}
+		public PickupDistanceForce pickupDistanceForce;
 	}
 	public PickupForceData pickupForceData;
 	
 	[System.Serializable]
 	public class AvoidForceData {
-		public AnimationCurve avoidForceCurve;
 
-		[Range(0.0f, 1.0f)]
-		public float avoidForceKey1;
-		[Range(0.0f, 1.0f)]
-		public float avoidForceKey2;
-		[Range(0.0f, 1.0f)]
-		public float avoidForceKey3;
-		[Range(0.0f, 1.0f)]
-		public float avoidForceKey4;
+		[System.Serializable]
+		public class AvoidHealthForce {
+			public AnimationCurve avoidHealthForceCurve;
+
+			[Range(0.0f, 1.0f)]
+			public float avoidHealthForceKey1;
+			[Range(0.0f, 1.0f)]
+			public float avoidHealthForceKey2;
+			[Range(0.0f, 1.0f)]
+			public float avoidHealthForceKey3;
+			[Range(0.0f, 1.0f)]
+			public float avoidHealthForceKey4;
+		}
+		public AvoidHealthForce avoidHealthForce;
+
+		[System.Serializable]
+		public class AvoidDistanceForce {
+			public AnimationCurve avoidDistanceForceCurve;
+
+			[Range(0.0f, 1.0f)]
+			public float avoidDistanceForceKey1;
+			[Range(0.0f, 1.0f)]
+			public float avoidDistanceForceKey2;
+			[Range(0.0f, 1.0f)]
+			public float avoidDistanceForceKey3;
+			[Range(0.0f, 1.0f)]
+			public float avoidDistanceForceKey4;
+		}
+		public AvoidDistanceForce avoidDistanceForce;
 	}
 	public AvoidForceData avoidForceData;
 
@@ -54,8 +94,31 @@ public class Agent : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		maxSteering = Random.Range(0.01f, 1.0f);
+		maxHealth = Random.Range(0.0f, 10.0f);
+		visionRadius = Random.Range(1.0f, 5.0f);
+
+		pickupForceData.pickupHealthForce.pickupHealthForceKey1 = Random.Range(0.0f, 1.0f);
+		pickupForceData.pickupHealthForce.pickupHealthForceKey2 = Random.Range(0.0f, 1.0f);
+		pickupForceData.pickupHealthForce.pickupHealthForceKey3 = Random.Range(0.0f, 1.0f);
+		pickupForceData.pickupHealthForce.pickupHealthForceKey4 = Random.Range(0.0f, 1.0f);
+		pickupForceData.pickupDistanceForce.pickupDistanceForceKey1 = Random.Range(0.0f, 1.0f);
+		pickupForceData.pickupDistanceForce.pickupDistanceForceKey2 = Random.Range(0.0f, 1.0f);
+		pickupForceData.pickupDistanceForce.pickupDistanceForceKey3 = Random.Range(0.0f, 1.0f);
+		pickupForceData.pickupDistanceForce.pickupDistanceForceKey4 = Random.Range(0.0f, 1.0f);
+
+		avoidForceData.avoidHealthForce.avoidHealthForceKey1 = Random.Range(0.0f, 1.0f);
+		avoidForceData.avoidHealthForce.avoidHealthForceKey2 = Random.Range(0.0f, 1.0f);
+		avoidForceData.avoidHealthForce.avoidHealthForceKey3 = Random.Range(0.0f, 1.0f);
+		avoidForceData.avoidHealthForce.avoidHealthForceKey4 = Random.Range(0.0f, 1.0f);
+		avoidForceData.avoidDistanceForce.avoidDistanceForceKey1 = Random.Range(0.0f, 1.0f);
+		avoidForceData.avoidDistanceForce.avoidDistanceForceKey2 = Random.Range(0.0f, 1.0f);
+		avoidForceData.avoidDistanceForce.avoidDistanceForceKey3 = Random.Range(0.0f, 1.0f);
+		avoidForceData.avoidDistanceForce.avoidDistanceForceKey4 = Random.Range(0.0f, 1.0f);
+
 		float randStartVelocity = Random.value;
-		velocity = randStartVelocity > 0.25f ? Vector3.up : randStartVelocity > 0.5 ? Vector3.left : randStartVelocity > 0.75 ? Vector3.down : Vector3.right;
+		velocity = randStartVelocity < 0.25f ? Vector3.up : randStartVelocity < 0.5 ? Vector3.left : randStartVelocity < 0.75 ? Vector3.down : Vector3.right;
 		maxVelocity = (11.0f - maxHealth) / 1.25f; // TODO: Don't like the magic numbers here
 		health = maxHealth;
 
@@ -101,11 +164,16 @@ public class Agent : MonoBehaviour {
 		visionCollider.offset = new Vector2(0.0f, -maxHealth / 20.0f);
 
 		// vvvvv Setup force curves vvvvv
-		float[] pickupforces = new float[] {pickupForceData.pickupForceKey1, pickupForceData.pickupForceKey2, pickupForceData.pickupForceKey3, pickupForceData.pickupForceKey4};
-		pickupForceData.pickupForceCurve = setupForceCurves(pickupforces);
 
-		float[] avoidforces = new float[] {avoidForceData.avoidForceKey1, avoidForceData.avoidForceKey2, avoidForceData.avoidForceKey3, avoidForceData.avoidForceKey4};
-		avoidForceData.avoidForceCurve = setupForceCurves(avoidforces);
+		float[] pickuphealthforces = new float[] {pickupForceData.pickupHealthForce.pickupHealthForceKey1, pickupForceData.pickupHealthForce.pickupHealthForceKey2, pickupForceData.pickupHealthForce.pickupHealthForceKey3, pickupForceData.pickupHealthForce.pickupHealthForceKey4};
+		pickupForceData.pickupHealthForce.pickupHealthForceCurve = setupForceCurves(pickuphealthforces);
+		float[] pickudistanceforces = new float[] {pickupForceData.pickupDistanceForce.pickupDistanceForceKey1, pickupForceData.pickupDistanceForce.pickupDistanceForceKey2, pickupForceData.pickupDistanceForce.pickupDistanceForceKey3, pickupForceData.pickupDistanceForce.pickupDistanceForceKey4};
+		pickupForceData.pickupDistanceForce.pickupDistanceForceCurve = setupForceCurves(pickudistanceforces);
+
+		float[] avoidhealthforces = new float[] {avoidForceData.avoidHealthForce.avoidHealthForceKey1, avoidForceData.avoidHealthForce.avoidHealthForceKey2, avoidForceData.avoidHealthForce.avoidHealthForceKey3, avoidForceData.avoidHealthForce.avoidHealthForceKey4};
+		avoidForceData.avoidHealthForce.avoidHealthForceCurve = setupForceCurves(avoidhealthforces);
+		float[] avoiddistanceforces = new float[] {avoidForceData.avoidDistanceForce.avoidDistanceForceKey1, avoidForceData.avoidDistanceForce.avoidDistanceForceKey2, avoidForceData.avoidDistanceForce.avoidDistanceForceKey3, avoidForceData.avoidDistanceForce.avoidDistanceForceKey4};
+		avoidForceData.avoidDistanceForce.avoidDistanceForceCurve = setupForceCurves(avoiddistanceforces);
 		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 		minScreenBounds = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0));
@@ -145,17 +213,23 @@ public class Agent : MonoBehaviour {
 			foreach (GameObject target in targetsInRange) {
 				switch (target.tag) {
 					case "avoid":
-						float avoidHealthForce = avoidForceData.avoidForceCurve.Evaluate(health / maxHealth);
-						avoidHealthForce = avoidHealthForce * 2 - 1; // Clamp between -1 & 1
+						float avoidForce = avoidForceData.avoidHealthForce.avoidHealthForceCurve.Evaluate(health / maxHealth); // return betweens 0 and 1
+						float avoidDistance = (target.transform.position - transform.position).magnitude;
+						avoidForce += avoidForceData.avoidDistanceForce.avoidDistanceForceCurve.Evaluate(avoidDistance / visionRadius); // return betweens 0 and 1
+						avoidForce = avoidForce / 2; // get average
+						avoidForce = avoidForce * 2 - 1; // Clamp between -1 & 1
 
-						steeringForce += Seek(target) * avoidHealthForce;
+						steeringForce += Seek(target) * avoidForce;
 					break;
 
 					case "attract":
-						float attractHealthForce = pickupForceData.pickupForceCurve.Evaluate(health / maxHealth);
-						attractHealthForce = attractHealthForce * 2 - 1; // Clamp between -1 & 1
+						float attractForce = pickupForceData.pickupHealthForce.pickupHealthForceCurve.Evaluate(health / maxHealth); // returns between 0 and 1
+						float attractDistance = (target.transform.position - transform.position).magnitude;
+						attractForce += pickupForceData.pickupDistanceForce.pickupDistanceForceCurve.Evaluate(attractDistance / visionRadius); // return betweens 0 and 1
+						attractForce = attractForce / 2; // get average
+						attractForce = attractForce * 2 - 1; // Clamp between -1 & 1
 
-						steeringForce += Seek(target) * attractHealthForce;
+						steeringForce += Seek(target) * attractForce;
 					break;
 
 					default:
@@ -201,8 +275,8 @@ public class Agent : MonoBehaviour {
 			// Head towards the center of the screen if outside the screen bounds
 			desiredVelocity = Vector3.Normalize(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, 0)) - transform.position) * maxVelocity;
 		} else {
-			desiredVelocity = Vector3.Normalize(velocity - transform.position) * maxVelocity;
-			desiredVelocity = Quaternion.AngleAxis(Random.value > 0.5 ? 25 : -25, Vector3.forward) * desiredVelocity;
+			desiredVelocity = Vector3.Normalize((transform.position + (velocity * Time.deltaTime)) - transform.position) * maxVelocity;
+			desiredVelocity = Quaternion.AngleAxis(Random.value >= 0.5f ? 35 : -35, Vector3.forward) * desiredVelocity;
 		}
 
 		desiredVelocity.z = 0.0f;
