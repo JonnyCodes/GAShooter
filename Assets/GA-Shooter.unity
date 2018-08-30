@@ -161,6 +161,7 @@ MonoBehaviour:
   maxSteering: 0.5
   maxHealth: 5
   visionRadius: 2.84
+  randomInit: 1
   pickupForceData:
     pickupHealthForce:
       pickupHealthForceCurve:
@@ -380,7 +381,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &234998080
 GameObject:
@@ -478,7 +479,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &370271575
 GameObject:
@@ -528,6 +529,7 @@ MonoBehaviour:
   maxSteering: 0.5
   maxHealth: 5
   visionRadius: 2.84
+  randomInit: 1
   pickupForceData:
     pickupHealthForce:
       pickupHealthForceCurve:
@@ -699,6 +701,7 @@ MonoBehaviour:
   maxSteering: 0.5
   maxHealth: 5
   visionRadius: 2.84
+  randomInit: 1
   pickupForceData:
     pickupHealthForce:
       pickupHealthForceCurve:
@@ -918,7 +921,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &904173834
 GameObject:
@@ -968,6 +971,7 @@ MonoBehaviour:
   maxSteering: 0.5
   maxHealth: 5
   visionRadius: 2.84
+  randomInit: 1
   pickupForceData:
     pickupHealthForce:
       pickupHealthForceCurve:
@@ -1091,6 +1095,178 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1099948392
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1099948397}
+  - component: {fileID: 1099948396}
+  - component: {fileID: 1099948395}
+  - component: {fileID: 1099948394}
+  - component: {fileID: 1099948393}
+  m_Layer: 0
+  m_Name: Cube (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!58 &1099948393
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1099948392}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+--- !u!114 &1099948394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1099948392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe110d215214ded47adffd1aeecee92b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSteering: 1.5
+  maxHealth: 10
+  visionRadius: 10
+  randomInit: 0
+  pickupForceData:
+    pickupHealthForce:
+      pickupHealthForceCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      pickupHealthForceKey1: 1
+      pickupHealthForceKey2: 0.9
+      pickupHealthForceKey3: 0.8
+      pickupHealthForceKey4: 0.7
+    pickupDistanceForce:
+      pickupDistanceForceCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      pickupDistanceForceKey1: 0.7
+      pickupDistanceForceKey2: 0.8
+      pickupDistanceForceKey3: 0.9
+      pickupDistanceForceKey4: 1
+    pickupDirectionForce:
+      pickupDirectionForceCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      pickupDirectionForceKey1: 1
+      pickupDirectionForceKey2: 0.65
+      pickupDirectionForceKey3: 0.65
+      pickupDirectionForceKey4: 1
+  avoidForceData:
+    avoidHealthForce:
+      avoidHealthForceCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      avoidHealthForceKey1: 0.29
+      avoidHealthForceKey2: 0.348
+      avoidHealthForceKey3: 0.447
+      avoidHealthForceKey4: 0.493
+    avoidDistanceForce:
+      avoidDistanceForceCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      avoidDistanceForceKey1: 0.389
+      avoidDistanceForceKey2: 0.476
+      avoidDistanceForceKey3: 0.522
+      avoidDistanceForceKey4: 0.534
+    avoidDirectionForce:
+      avoidDirectionForceCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      avoidDirectionForceKey1: 0
+      avoidDirectionForceKey2: 0
+      avoidDirectionForceKey3: 0
+      avoidDirectionForceKey4: 0
+--- !u!23 &1099948395
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1099948392}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &1099948396
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1099948392}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1099948397
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1099948392}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 24, y: 7, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1371485139
 GameObject:
   m_ObjectHideFlags: 0
@@ -1187,7 +1363,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1406673881
 GameObject:
@@ -1362,7 +1538,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1620060345
 GameObject:
@@ -1460,5 +1636,5 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

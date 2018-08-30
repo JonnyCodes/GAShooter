@@ -14,6 +14,8 @@ public class Agent : MonoBehaviour {
 	[Range(1.0f, 10.0f)]
 	public float visionRadius; // This is the radius of perception circle
 
+	public bool randomInit;
+
 	[System.Serializable]
 	public class PickupForceData {
 		
@@ -125,35 +127,37 @@ public class Agent : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		maxSteering = Random.Range(0.1f, 1.5f);
-		maxHealth = Random.Range(1.0f, 10.0f);
-		visionRadius = Random.Range(1.0f, 10.0f);
+		if (randomInit) {
+			maxSteering = Random.Range(0.1f, 1.5f);
+			maxHealth = Random.Range(1.0f, 10.0f);
+			visionRadius = Random.Range(1.0f, 10.0f);
 
-		pickupForceData.pickupHealthForce.pickupHealthForceKey1 = Random.Range(0.0f, 1.0f);
-		pickupForceData.pickupHealthForce.pickupHealthForceKey2 = Random.Range(0.0f, 1.0f);
-		pickupForceData.pickupHealthForce.pickupHealthForceKey3 = Random.Range(0.0f, 1.0f);
-		pickupForceData.pickupHealthForce.pickupHealthForceKey4 = Random.Range(0.0f, 1.0f);
-		pickupForceData.pickupDistanceForce.pickupDistanceForceKey1 = Random.Range(0.0f, 1.0f);
-		pickupForceData.pickupDistanceForce.pickupDistanceForceKey2 = Random.Range(0.0f, 1.0f);
-		pickupForceData.pickupDistanceForce.pickupDistanceForceKey3 = Random.Range(0.0f, 1.0f);
-		pickupForceData.pickupDistanceForce.pickupDistanceForceKey4 = Random.Range(0.0f, 1.0f);
-		pickupForceData.pickupDirectionForce.pickupDirectionForceKey1 = Random.Range(0.0f, 1.0f);
-		pickupForceData.pickupDirectionForce.pickupDirectionForceKey2 = Random.Range(0.0f, 1.0f);
-		pickupForceData.pickupDirectionForce.pickupDirectionForceKey3 = Random.Range(0.0f, 1.0f);
-		pickupForceData.pickupDirectionForce.pickupDirectionForceKey4 = Random.Range(0.0f, 1.0f);
+			pickupForceData.pickupHealthForce.pickupHealthForceKey1 = Random.Range(0.0f, 1.0f);
+			pickupForceData.pickupHealthForce.pickupHealthForceKey2 = Random.Range(0.0f, 1.0f);
+			pickupForceData.pickupHealthForce.pickupHealthForceKey3 = Random.Range(0.0f, 1.0f);
+			pickupForceData.pickupHealthForce.pickupHealthForceKey4 = Random.Range(0.0f, 1.0f);
+			pickupForceData.pickupDistanceForce.pickupDistanceForceKey1 = Random.Range(0.0f, 1.0f);
+			pickupForceData.pickupDistanceForce.pickupDistanceForceKey2 = Random.Range(0.0f, 1.0f);
+			pickupForceData.pickupDistanceForce.pickupDistanceForceKey3 = Random.Range(0.0f, 1.0f);
+			pickupForceData.pickupDistanceForce.pickupDistanceForceKey4 = Random.Range(0.0f, 1.0f);
+			pickupForceData.pickupDirectionForce.pickupDirectionForceKey1 = Random.Range(0.0f, 1.0f);
+			pickupForceData.pickupDirectionForce.pickupDirectionForceKey2 = Random.Range(0.0f, 1.0f);
+			pickupForceData.pickupDirectionForce.pickupDirectionForceKey3 = Random.Range(0.0f, 1.0f);
+			pickupForceData.pickupDirectionForce.pickupDirectionForceKey4 = Random.Range(0.0f, 1.0f);
 
-		avoidForceData.avoidHealthForce.avoidHealthForceKey1 = Random.Range(0.0f, 1.0f);
-		avoidForceData.avoidHealthForce.avoidHealthForceKey2 = Random.Range(0.0f, 1.0f);
-		avoidForceData.avoidHealthForce.avoidHealthForceKey3 = Random.Range(0.0f, 1.0f);
-		avoidForceData.avoidHealthForce.avoidHealthForceKey4 = Random.Range(0.0f, 1.0f);
-		avoidForceData.avoidDistanceForce.avoidDistanceForceKey1 = Random.Range(0.0f, 1.0f);
-		avoidForceData.avoidDistanceForce.avoidDistanceForceKey2 = Random.Range(0.0f, 1.0f);
-		avoidForceData.avoidDistanceForce.avoidDistanceForceKey3 = Random.Range(0.0f, 1.0f);
-		avoidForceData.avoidDistanceForce.avoidDistanceForceKey4 = Random.Range(0.0f, 1.0f);
-		avoidForceData.avoidDirectionForce.avoidDirectionForceKey1 = Random.Range(0.0f, 1.0f);
-		avoidForceData.avoidDirectionForce.avoidDirectionForceKey2 = Random.Range(0.0f, 1.0f);
-		avoidForceData.avoidDirectionForce.avoidDirectionForceKey3 = Random.Range(0.0f, 1.0f);
-		avoidForceData.avoidDirectionForce.avoidDirectionForceKey4 = Random.Range(0.0f, 1.0f);
+			avoidForceData.avoidHealthForce.avoidHealthForceKey1 = Random.Range(0.0f, 1.0f);
+			avoidForceData.avoidHealthForce.avoidHealthForceKey2 = Random.Range(0.0f, 1.0f);
+			avoidForceData.avoidHealthForce.avoidHealthForceKey3 = Random.Range(0.0f, 1.0f);
+			avoidForceData.avoidHealthForce.avoidHealthForceKey4 = Random.Range(0.0f, 1.0f);
+			avoidForceData.avoidDistanceForce.avoidDistanceForceKey1 = Random.Range(0.0f, 1.0f);
+			avoidForceData.avoidDistanceForce.avoidDistanceForceKey2 = Random.Range(0.0f, 1.0f);
+			avoidForceData.avoidDistanceForce.avoidDistanceForceKey3 = Random.Range(0.0f, 1.0f);
+			avoidForceData.avoidDistanceForce.avoidDistanceForceKey4 = Random.Range(0.0f, 1.0f);
+			avoidForceData.avoidDirectionForce.avoidDirectionForceKey1 = Random.Range(0.0f, 1.0f);
+			avoidForceData.avoidDirectionForce.avoidDirectionForceKey2 = Random.Range(0.0f, 1.0f);
+			avoidForceData.avoidDirectionForce.avoidDirectionForceKey3 = Random.Range(0.0f, 1.0f);
+			avoidForceData.avoidDirectionForce.avoidDirectionForceKey4 = Random.Range(0.0f, 1.0f);
+		}
 
 		float randStartVelocity = Random.value;
 		velocity = randStartVelocity < 0.25f ? Vector3.up : randStartVelocity < 0.5 ? Vector3.left : randStartVelocity < 0.75 ? Vector3.down : Vector3.right;
