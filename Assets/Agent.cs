@@ -264,8 +264,7 @@ public class Agent : MonoBehaviour {
 					float healthPercentage = health / maxHealth; // Between 0 and 1
 					Vector3 vectorToTarget = target.transform.position - transform.position;
 					float distance = vectorToTarget.magnitude / visionRadius; // Between 0 and 1
-					// TODO: DIRECTION IS WRONG!
-					float direction =  ((transform.rotation.z + (Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg) + 90) % 360) / 360; // Between 0 and 1
+					float direction =  Mathf.Abs(((((Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg) + 90) - ((Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg) + 90))) % 360) / 360; // Between 0 and 1
 
 					switch (target.tag) {
 						case "avoid":
