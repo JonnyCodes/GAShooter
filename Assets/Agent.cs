@@ -5,6 +5,7 @@ using System.Linq;
 
 public class Agent : MonoBehaviour {
 
+	public GameObject bulletPrefab;
 	[Range(0.1f, 1.5f)]
 	public float maxSteering; // This changes the distance between the "wheels" (Back 2 verts); Bigger = slower turning.
 	
@@ -13,6 +14,12 @@ public class Agent : MonoBehaviour {
 
 	[Range(1.0f, 10.0f)]
 	public float visionRadius; // This is the radius of perception circle
+
+	[Range(1.0f, 10.0f)]
+	public float rateOfFire; // How quickly an agent can shoot
+
+	[Range(0.2f, 1.0f)]
+	public float bulletSize; // The size of the bullets
 
 	public bool randomInit;
 
@@ -116,10 +123,10 @@ public class Agent : MonoBehaviour {
 	}
 	public AvoidForceData avoidForceData;
 
-	private CircleCollider2D visionCollider;
 	private Vector3 velocity;
 	private float maxVelocity;
 	private float health;
+	private float shootTimer;
 
 	private Vector3 minScreenBounds;
 	private Vector3 maxScreenBounds;
@@ -131,6 +138,8 @@ public class Agent : MonoBehaviour {
 			maxSteering = Random.Range(0.1f, 1.5f);
 			maxHealth = Random.Range(1.0f, 10.0f);
 			visionRadius = Random.Range(1.0f, 10.0f);
+			rateOfFire = Random.Range(1.0f, 10.0f);
+			bulletSize = Random.Range(0.2f, 1.0f);
 
 			pickupForceData.pickupHealthForce.pickupHealthForceKey1 = Random.Range(0.0f, 1.0f);
 			pickupForceData.pickupHealthForce.pickupHealthForceKey2 = Random.Range(0.0f, 1.0f);
@@ -163,6 +172,7 @@ public class Agent : MonoBehaviour {
 		velocity = randStartVelocity < 0.25f ? Vector3.up : randStartVelocity < 0.5 ? Vector3.left : randStartVelocity < 0.75 ? Vector3.down : Vector3.right;
 		maxVelocity = (11.0f - maxHealth) / 1.25f; // TODO: Don't like the magic numbers here
 		health = maxHealth;
+		shootTimer = 0.0f;
 
 		// vvvvv Create agent polygon vvvvv
 		MeshFilter meshFilter = GetComponent<MeshFilter>();
@@ -170,10 +180,10 @@ public class Agent : MonoBehaviour {
 		meshFilter.mesh = agentMesh;
 
 		Vector3[] verts = new Vector3[4];
-		verts[0] = new Vector3(-maxSteering - 0.1f, 0.15f, 0.0f);
-		verts[1] = new Vector3(0.0f, (-maxHealth / 10.0f) - 0.25f, 0.0f);
+		verts[0] = new Vector3(-maxSteering - 0.2f, 0.15f, 0.0f);
+		verts[1] = new Vector3(0.0f, (-maxHealth / 10.0f) - 0.35f, 0.0f);
 		verts[2] = new Vector3(0.0f, 0.0f, 0.0f); // CENTER OF THE POLYGON
-		verts[3] = new Vector3(maxSteering + 0.1f, 0.15f, 0.0f);
+		verts[3] = new Vector3(maxSteering + 0.2f, 0.15f, 0.0f);
 		agentMesh.vertices = verts;
 
 		int[] tris = new int[6];
@@ -200,10 +210,6 @@ public class Agent : MonoBehaviour {
 		uvs[3] = new Vector2(1.0f, 1.0f);
 		agentMesh.uv = uvs;
 		// ^^^^^^^^^^^^^^^^^^^^^^
-
-		visionCollider = GetComponent<CircleCollider2D>();
-		visionCollider.radius = visionRadius;
-		visionCollider.offset = new Vector2(0.0f, -maxHealth / 20.0f);
 
 		// vvvvv Setup force curves vvvvv
 
@@ -236,22 +242,10 @@ public class Agent : MonoBehaviour {
 		return curve;
 	}
 
-	List<GameObject> GetTargetsInRange() {
-		List<GameObject> targets = GameObject.FindGameObjectsWithTag("attract").Concat(GameObject.FindGameObjectsWithTag("avoid")).ToList();
-
-		for (int i = targets.Count - 1; i >= 0; i--) {
-			if ((targets[i].transform.position - transform.position).sqrMagnitude > visionRadius * visionRadius) {
-				targets.RemoveAt(i);
-			}
-		}
-
-		return targets;
-	}
-	
 	// Update is called once per frame
 	void Update () {
 
-		List<GameObject> targetsInRange = GetTargetsInRange();
+		List<Collider2D> targetsInRange = Physics2D.OverlapCircleAll(transform.position, visionRadius).ToList();
 
 		Vector3 steeringForce = Vector3.zero;
 
@@ -263,7 +257,9 @@ public class Agent : MonoBehaviour {
 		} else {
 
 			if (targetsInRange.Count > 0) {
-				foreach (GameObject target in targetsInRange) {
+				foreach (Collider2D collider in targetsInRange) {
+
+					GameObject target = collider.gameObject;
 
 					float healthPercentage = health / maxHealth; // Between 0 and 1
 					Vector3 vectorToTarget = target.transform.position - transform.position;
@@ -279,7 +275,7 @@ public class Agent : MonoBehaviour {
 							avoidForce = avoidForce * 2 - 1; // Clamp between -1 & 1
 
 							steeringForce += Seek(target) * avoidForce;
-						break;
+							break;
 
 						case "attract":
 							float attractForce = pickupForceData.pickupHealthForce.pickupHealthForceCurve.Evaluate(healthPercentage); // returns between 0 and 1
@@ -289,11 +285,7 @@ public class Agent : MonoBehaviour {
 							attractForce = attractForce * 2 - 1; // Clamp between -1 & 1
 
 							steeringForce += Seek(target) * attractForce;
-						break;
-
-						default:
-							steeringForce += Seek(target);
-						break;
+							break;
 					}
 				}
 			} else {
@@ -301,7 +293,21 @@ public class Agent : MonoBehaviour {
 			}
 		}
 
-		// SHOOTING?!?!?!
+		shootTimer += Time.deltaTime;
+		if (shootTimer >= rateOfFire) {
+			shootTimer = 0;
+			// SHOOT
+			GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+			bullet.transform.localScale = Vector3.one * bulletSize;
+			// TODO: Bullet needs it's own script to handle velocity, destroying it's self and collisions
+
+			Destroy(bullet, 2.0f);
+
+			// Decrease velocity by bullet size!
+			velocity *= -bulletSize / 2;
+			// TODO: Agents should be able to travel backwards if shooting causes negative velocity
+		}
+
 
 		if (steeringForce.sqrMagnitude > maxSteering * maxSteering) {
 			steeringForce.Normalize();
