@@ -11,7 +11,7 @@ public class Agent : MonoBehaviour {
 	[Range(1.0f, 10.0f)]
 	public float maxHealth; // This changes the agents scale and maxVelocity; more health = bigger & slower
 
-	[Range(1.0f, 7.0f)]
+	[Range(1.0f, 10.0f)]
 	public float visionRadius; // This is the radius of perception circle
 
 	[System.Serializable]
@@ -127,7 +127,7 @@ public class Agent : MonoBehaviour {
 
 		maxSteering = Random.Range(0.1f, 1.5f);
 		maxHealth = Random.Range(1.0f, 10.0f);
-		visionRadius = Random.Range(1.0f, 7.0f);
+		visionRadius = Random.Range(1.0f, 10.0f);
 
 		pickupForceData.pickupHealthForce.pickupHealthForceKey1 = Random.Range(0.0f, 1.0f);
 		pickupForceData.pickupHealthForce.pickupHealthForceKey2 = Random.Range(0.0f, 1.0f);
@@ -251,42 +251,51 @@ public class Agent : MonoBehaviour {
 
 		Vector3 steeringForce = Vector3.zero;
 
-		if (targetsInRange.Count > 0) {
-			foreach (GameObject target in targetsInRange) {
-
-				float healthPercentage = health / maxHealth; // Between 0 and 1
-				Vector3 vectorToTarget = target.transform.position - transform.position;
-				float distance = vectorToTarget.magnitude / visionRadius; // Between 0 and 1
-				float direction = ((Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg) + 90) / 360; // Between 0 and 1
-
-				switch (target.tag) {
-					case "avoid":
-						float avoidForce = avoidForceData.avoidHealthForce.avoidHealthForceCurve.Evaluate(healthPercentage); // return betweens 0 and 1
-						avoidForce += avoidForceData.avoidDistanceForce.avoidDistanceForceCurve.Evaluate(distance); // return betweens 0 and 1
-						avoidForce += avoidForceData.avoidDirectionForce.avoidDirectionForceCurve.Evaluate(direction); // return betweens 0 and 1
-						avoidForce = avoidForce / 3; // get average
-						avoidForce = avoidForce * 2 - 1; // Clamp between -1 & 1
-
-						steeringForce += Seek(target) * avoidForce;
-					break;
-
-					case "attract":
-						float attractForce = pickupForceData.pickupHealthForce.pickupHealthForceCurve.Evaluate(healthPercentage); // returns between 0 and 1
-						attractForce += pickupForceData.pickupDistanceForce.pickupDistanceForceCurve.Evaluate(distance); // return betweens 0 and 1
-						attractForce += pickupForceData.pickupDirectionForce.pickupDirectionForceCurve.Evaluate(direction); // return betweens 0 and 1
-						attractForce = attractForce / 3; // get average
-						attractForce = attractForce * 2 - 1; // Clamp between -1 & 1
-
-						steeringForce += Seek(target) * attractForce;
-					break;
-
-					default:
-						steeringForce += Seek(target);
-					break;
-				}
-			}
+		if (transform.position.x < minScreenBounds.x || transform.position.x > maxScreenBounds.x || transform.position.y < minScreenBounds.y || transform.position.y > maxScreenBounds.y) {
+			// Head towards the center of the screen if outside the screen bounds
+			Vector3 desiredVelocity = Vector3.Normalize(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, 0)) - transform.position) * maxVelocity;
+			steeringForce = desiredVelocity - velocity;
+			steeringForce.z = 0.0f;
 		} else {
-			steeringForce += RandomSeek();
+
+			if (targetsInRange.Count > 0) {
+				foreach (GameObject target in targetsInRange) {
+
+					float healthPercentage = health / maxHealth; // Between 0 and 1
+					Vector3 vectorToTarget = target.transform.position - transform.position;
+					float distance = vectorToTarget.magnitude / visionRadius; // Between 0 and 1
+					// TODO: DIRECTION IS WRONG!
+					float direction =  ((transform.rotation.z + (Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg) + 90) % 360) / 360; // Between 0 and 1
+
+					switch (target.tag) {
+						case "avoid":
+							float avoidForce = avoidForceData.avoidHealthForce.avoidHealthForceCurve.Evaluate(healthPercentage); // return betweens 0 and 1
+							avoidForce += avoidForceData.avoidDistanceForce.avoidDistanceForceCurve.Evaluate(distance); // return betweens 0 and 1
+							avoidForce += avoidForceData.avoidDirectionForce.avoidDirectionForceCurve.Evaluate(direction); // return betweens 0 and 1
+							avoidForce = avoidForce / 3; // get average
+							avoidForce = avoidForce * 2 - 1; // Clamp between -1 & 1
+
+							steeringForce += Seek(target) * avoidForce;
+						break;
+
+						case "attract":
+							float attractForce = pickupForceData.pickupHealthForce.pickupHealthForceCurve.Evaluate(healthPercentage); // returns between 0 and 1
+							attractForce += pickupForceData.pickupDistanceForce.pickupDistanceForceCurve.Evaluate(distance); // return betweens 0 and 1
+							attractForce += pickupForceData.pickupDirectionForce.pickupDirectionForceCurve.Evaluate(direction); // return betweens 0 and 1
+							attractForce = attractForce / 3; // get average
+							attractForce = attractForce * 2 - 1; // Clamp between -1 & 1
+
+							steeringForce += Seek(target) * attractForce;
+						break;
+
+						default:
+							steeringForce += Seek(target);
+						break;
+					}
+				}
+			} else {
+				steeringForce += RandomSeek();
+			}
 		}
 
 		// SHOOTING?!?!?!
@@ -319,13 +328,8 @@ public class Agent : MonoBehaviour {
 
 		Vector3 desiredVelocity = Vector3.zero;
 
-		if (transform.position.x < minScreenBounds.x || transform.position.x > maxScreenBounds.x || transform.position.y < minScreenBounds.y || transform.position.y > maxScreenBounds.y) {
-			// Head towards the center of the screen if outside the screen bounds
-			desiredVelocity = Vector3.Normalize(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, 0)) - transform.position) * maxVelocity;
-		} else {
-			desiredVelocity = Vector3.Normalize((transform.position + velocity) - transform.position) * maxVelocity;
-			desiredVelocity = Quaternion.AngleAxis(Random.value >= 0.5f ? 35 : -35, Vector3.forward) * desiredVelocity;
-		}
+		desiredVelocity = Vector3.Normalize((transform.position + (velocity * 3.0f)) - transform.position) * maxVelocity;
+		desiredVelocity = Quaternion.AngleAxis(Random.Range(-10.0f, 10.0f), Vector3.forward) * desiredVelocity;
 
 		desiredVelocity.z = 0.0f;
 
