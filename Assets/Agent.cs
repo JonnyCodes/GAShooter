@@ -299,13 +299,11 @@ public class Agent : MonoBehaviour {
 			// SHOOT
 			GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
 			bullet.transform.localScale = Vector3.one * bulletSize;
-			// TODO: Bullet needs it's own script to handle velocity, destroying it's self and collisions
-
-			Destroy(bullet, 2.0f);
+			bullet.GetComponent<BulletScript>().velocity = Vector3.ClampMagnitude(velocity * maxVelocity, maxVelocity * 2);
 
 			// Decrease velocity by bullet size!
-			velocity *= -bulletSize / 2;
-			// TODO: Agents should be able to travel backwards if shooting causes negative velocity
+			velocity *= Mathf.Clamp(bulletSize / 10.0f, 0.01f, maxVelocity * 2);
+			// TODO: Agents should be able to travel backwards if shooting causes negative velocity??
 		}
 
 

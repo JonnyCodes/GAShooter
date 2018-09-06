@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Agent.cs" />
+     <Compile Include="Assets\BulletScript.cs" />
      <Compile Include="Assets\RandomPoint.cs" />
  <Reference Include="UnityEditor.StandardEvents">
  <HintPath>C:/Users/J.Blackburn/Documents/JonnyGit/GAShooter/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
