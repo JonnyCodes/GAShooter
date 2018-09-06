@@ -299,10 +299,10 @@ public class Agent : MonoBehaviour {
 			// SHOOT
 			GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
 			bullet.transform.localScale = Vector3.one * bulletSize;
-			bullet.GetComponent<BulletScript>().velocity = Vector3.ClampMagnitude(velocity * maxVelocity, maxVelocity * 2);
+			bullet.GetComponent<BulletScript>().velocity = Vector3.ClampMagnitude(velocity * 3, maxVelocity * 3);
 
 			// Decrease velocity by bullet size!
-			velocity *= Mathf.Clamp(bulletSize / 10.0f, 0.01f, maxVelocity * 2);
+			velocity *= (1.0f - bulletSize);
 			// TODO: Agents should be able to travel backwards if shooting causes negative velocity??
 		}
 
@@ -335,7 +335,7 @@ public class Agent : MonoBehaviour {
 
 		Vector3 desiredVelocity = Vector3.zero;
 
-		desiredVelocity = Vector3.Normalize((transform.position + (velocity * 3.0f)) - transform.position) * maxVelocity;
+		desiredVelocity = Vector3.Normalize((transform.position + Vector3.ClampMagnitude(velocity * 3.0f, maxVelocity)) - transform.position) * maxVelocity;
 		desiredVelocity = Quaternion.AngleAxis(Random.Range(-10.0f, 10.0f), Vector3.forward) * desiredVelocity;
 
 		desiredVelocity.z = 0.0f;
