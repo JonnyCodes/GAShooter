@@ -113,166 +113,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &141387288
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 141387293}
-  - component: {fileID: 141387292}
-  - component: {fileID: 141387291}
-  - component: {fileID: 141387290}
-  m_Layer: 0
-  m_Name: Cube
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &141387290
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 141387288}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe110d215214ded47adffd1aeecee92b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 1802664638586886, guid: 83510599d287b6c45869e3911d601a22,
-    type: 2}
-  maxSteering: 0.5
-  maxHealth: 5
-  visionRadius: 2.84
-  rateOfFire: 0
-  bulletSize: 0
-  randomInit: 1
-  pickupForceData:
-    pickupHealthForce:
-      pickupHealthForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      pickupHealthForceKey1: 0
-      pickupHealthForceKey2: 0
-      pickupHealthForceKey3: 0
-      pickupHealthForceKey4: 0
-    pickupDistanceForce:
-      pickupDistanceForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      pickupDistanceForceKey1: 0
-      pickupDistanceForceKey2: 0
-      pickupDistanceForceKey3: 0
-      pickupDistanceForceKey4: 0
-    pickupDirectionForce:
-      pickupDirectionForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      pickupDirectionForceKey1: 0
-      pickupDirectionForceKey2: 0
-      pickupDirectionForceKey3: 0
-      pickupDirectionForceKey4: 0
-  avoidForceData:
-    avoidHealthForce:
-      avoidHealthForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      avoidHealthForceKey1: 0.29
-      avoidHealthForceKey2: 0.348
-      avoidHealthForceKey3: 0.447
-      avoidHealthForceKey4: 0.493
-    avoidDistanceForce:
-      avoidDistanceForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      avoidDistanceForceKey1: 0.389
-      avoidDistanceForceKey2: 0.476
-      avoidDistanceForceKey3: 0.522
-      avoidDistanceForceKey4: 0.534
-    avoidDirectionForce:
-      avoidDirectionForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      avoidDirectionForceKey1: 0
-      avoidDirectionForceKey2: 0
-      avoidDirectionForceKey3: 0
-      avoidDirectionForceKey4: 0
---- !u!23 &141387291
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 141387288}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &141387292
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 141387288}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &141387293
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 141387288}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.04, y: 6.41, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &157009527
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,7 +212,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &313731631
 GameObject:
@@ -473,328 +313,8 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -150.90901}
---- !u!1 &370271575
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 370271580}
-  - component: {fileID: 370271579}
-  - component: {fileID: 370271578}
-  - component: {fileID: 370271577}
-  m_Layer: 0
-  m_Name: Cube (3)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &370271577
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 370271575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe110d215214ded47adffd1aeecee92b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 1802664638586886, guid: 83510599d287b6c45869e3911d601a22,
-    type: 2}
-  maxSteering: 0.5
-  maxHealth: 5
-  visionRadius: 2.84
-  rateOfFire: 0
-  bulletSize: 0
-  randomInit: 1
-  pickupForceData:
-    pickupHealthForce:
-      pickupHealthForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      pickupHealthForceKey1: 0
-      pickupHealthForceKey2: 0
-      pickupHealthForceKey3: 0
-      pickupHealthForceKey4: 0
-    pickupDistanceForce:
-      pickupDistanceForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      pickupDistanceForceKey1: 0
-      pickupDistanceForceKey2: 0
-      pickupDistanceForceKey3: 0
-      pickupDistanceForceKey4: 0
-    pickupDirectionForce:
-      pickupDirectionForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      pickupDirectionForceKey1: 0
-      pickupDirectionForceKey2: 0
-      pickupDirectionForceKey3: 0
-      pickupDirectionForceKey4: 0
-  avoidForceData:
-    avoidHealthForce:
-      avoidHealthForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      avoidHealthForceKey1: 0.29
-      avoidHealthForceKey2: 0.348
-      avoidHealthForceKey3: 0.447
-      avoidHealthForceKey4: 0.493
-    avoidDistanceForce:
-      avoidDistanceForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      avoidDistanceForceKey1: 0.389
-      avoidDistanceForceKey2: 0.476
-      avoidDistanceForceKey3: 0.522
-      avoidDistanceForceKey4: 0.534
-    avoidDirectionForce:
-      avoidDirectionForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      avoidDirectionForceKey1: 0
-      avoidDirectionForceKey2: 0
-      avoidDirectionForceKey3: 0
-      avoidDirectionForceKey4: 0
---- !u!23 &370271578
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 370271575}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &370271579
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 370271575}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &370271580
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 370271575}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.03, y: -0.07, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &383411484
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 383411489}
-  - component: {fileID: 383411488}
-  - component: {fileID: 383411487}
-  - component: {fileID: 383411486}
-  m_Layer: 0
-  m_Name: Cube (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &383411486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 383411484}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe110d215214ded47adffd1aeecee92b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 1802664638586886, guid: 83510599d287b6c45869e3911d601a22,
-    type: 2}
-  maxSteering: 0.5
-  maxHealth: 5
-  visionRadius: 2.84
-  rateOfFire: 0
-  bulletSize: 0
-  randomInit: 1
-  pickupForceData:
-    pickupHealthForce:
-      pickupHealthForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      pickupHealthForceKey1: 0
-      pickupHealthForceKey2: 0
-      pickupHealthForceKey3: 0
-      pickupHealthForceKey4: 0
-    pickupDistanceForce:
-      pickupDistanceForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      pickupDistanceForceKey1: 0
-      pickupDistanceForceKey2: 0
-      pickupDistanceForceKey3: 0
-      pickupDistanceForceKey4: 0
-    pickupDirectionForce:
-      pickupDirectionForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      pickupDirectionForceKey1: 0
-      pickupDirectionForceKey2: 0
-      pickupDirectionForceKey3: 0
-      pickupDirectionForceKey4: 0
-  avoidForceData:
-    avoidHealthForce:
-      avoidHealthForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      avoidHealthForceKey1: 0.29
-      avoidHealthForceKey2: 0.348
-      avoidHealthForceKey3: 0.447
-      avoidHealthForceKey4: 0.493
-    avoidDistanceForce:
-      avoidDistanceForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      avoidDistanceForceKey1: 0.389
-      avoidDistanceForceKey2: 0.476
-      avoidDistanceForceKey3: 0.522
-      avoidDistanceForceKey4: 0.534
-    avoidDirectionForce:
-      avoidDirectionForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      avoidDirectionForceKey1: 0
-      avoidDirectionForceKey2: 0
-      avoidDirectionForceKey3: 0
-      avoidDirectionForceKey4: 0
---- !u!23 &383411487
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 383411484}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &383411488
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 383411484}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &383411489
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 383411484}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.07, y: 0.04, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &737241473
 GameObject:
   m_ObjectHideFlags: 0
@@ -894,7 +414,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -21.599}
 --- !u!1 &850322585
 GameObject:
@@ -995,327 +515,53 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -150.90901}
---- !u!1 &904173834
+--- !u!1 &1257318271
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 904173839}
-  - component: {fileID: 904173838}
-  - component: {fileID: 904173837}
-  - component: {fileID: 904173836}
+  - component: {fileID: 1257318273}
+  - component: {fileID: 1257318272}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &904173836
+--- !u!114 &1257318272
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 904173834}
+  m_GameObject: {fileID: 1257318271}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe110d215214ded47adffd1aeecee92b, type: 3}
+  m_Script: {fileID: 11500000, guid: c6ad8cac65313384e82f27be86f30d81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 1802664638586886, guid: 83510599d287b6c45869e3911d601a22,
+  agentPrefab: {fileID: 1937427341371510, guid: 6200b40618bc32a45b80ef0538e6698d,
     type: 2}
-  maxSteering: 0.5
-  maxHealth: 5
-  visionRadius: 2.84
-  rateOfFire: 0
-  bulletSize: 0
-  randomInit: 1
-  pickupForceData:
-    pickupHealthForce:
-      pickupHealthForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      pickupHealthForceKey1: 0
-      pickupHealthForceKey2: 0
-      pickupHealthForceKey3: 0
-      pickupHealthForceKey4: 0
-    pickupDistanceForce:
-      pickupDistanceForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      pickupDistanceForceKey1: 0
-      pickupDistanceForceKey2: 0
-      pickupDistanceForceKey3: 0
-      pickupDistanceForceKey4: 0
-    pickupDirectionForce:
-      pickupDirectionForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      pickupDirectionForceKey1: 0
-      pickupDirectionForceKey2: 0
-      pickupDirectionForceKey3: 0
-      pickupDirectionForceKey4: 0
-  avoidForceData:
-    avoidHealthForce:
-      avoidHealthForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      avoidHealthForceKey1: 0.29
-      avoidHealthForceKey2: 0.348
-      avoidHealthForceKey3: 0.447
-      avoidHealthForceKey4: 0.493
-    avoidDistanceForce:
-      avoidDistanceForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      avoidDistanceForceKey1: 0.389
-      avoidDistanceForceKey2: 0.476
-      avoidDistanceForceKey3: 0.522
-      avoidDistanceForceKey4: 0.534
-    avoidDirectionForce:
-      avoidDirectionForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      avoidDirectionForceKey1: 0
-      avoidDirectionForceKey2: 0
-      avoidDirectionForceKey3: 0
-      avoidDirectionForceKey4: 0
---- !u!23 &904173837
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 904173834}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &904173838
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 904173834}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &904173839
+  maxNumAgents: 10
+  reproduceInteval: 30
+  mutatePercetage: 5
+  agents: []
+--- !u!4 &1257318273
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 904173834}
+  m_GameObject: {fileID: 1257318271}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.19, y: -6.07, z: 0}
+  m_LocalPosition: {x: -1.5901039, y: 1.8082575, z: -0.953125}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1099948392
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1099948397}
-  - component: {fileID: 1099948396}
-  - component: {fileID: 1099948395}
-  - component: {fileID: 1099948394}
-  m_Layer: 0
-  m_Name: Cube (4)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1099948394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1099948392}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe110d215214ded47adffd1aeecee92b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 1802664638586886, guid: 83510599d287b6c45869e3911d601a22,
-    type: 2}
-  maxSteering: 0.1
-  maxHealth: 1
-  visionRadius: 10
-  rateOfFire: 1
-  bulletSize: 0.25
-  randomInit: 0
-  pickupForceData:
-    pickupHealthForce:
-      pickupHealthForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      pickupHealthForceKey1: 1
-      pickupHealthForceKey2: 0.9
-      pickupHealthForceKey3: 0.8
-      pickupHealthForceKey4: 0.7
-    pickupDistanceForce:
-      pickupDistanceForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      pickupDistanceForceKey1: 0.7
-      pickupDistanceForceKey2: 0.8
-      pickupDistanceForceKey3: 0.9
-      pickupDistanceForceKey4: 1
-    pickupDirectionForce:
-      pickupDirectionForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      pickupDirectionForceKey1: 1
-      pickupDirectionForceKey2: 0.65
-      pickupDirectionForceKey3: 0.65
-      pickupDirectionForceKey4: 1
-  avoidForceData:
-    avoidHealthForce:
-      avoidHealthForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      avoidHealthForceKey1: 0.29
-      avoidHealthForceKey2: 0.348
-      avoidHealthForceKey3: 0.447
-      avoidHealthForceKey4: 0.493
-    avoidDistanceForce:
-      avoidDistanceForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      avoidDistanceForceKey1: 0.389
-      avoidDistanceForceKey2: 0.476
-      avoidDistanceForceKey3: 0.522
-      avoidDistanceForceKey4: 0.534
-    avoidDirectionForce:
-      avoidDirectionForceCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      avoidDirectionForceKey1: 0
-      avoidDirectionForceKey2: 0
-      avoidDirectionForceKey3: 0
-      avoidDirectionForceKey4: 0
---- !u!23 &1099948395
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1099948392}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &1099948396
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1099948392}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1099948397
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1099948392}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24, y: 7, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1365264416
 GameObject:
@@ -1416,7 +662,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -21.599}
 --- !u!1 &1371485139
 GameObject:
@@ -1517,7 +763,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1406673881
 GameObject:
@@ -1695,7 +941,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -150.90901}
 --- !u!1 &1728175124
 GameObject:
@@ -1796,5 +1042,5 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -150.90901}

@@ -6,6 +6,7 @@ using System.Linq;
 public class Agent : MonoBehaviour {
 
 	public GameObject bulletPrefab;
+	public bool randInit = true;
 	[Range(0.1f, 1.5f)]
 	public float maxSteering; // This changes the distance between the "wheels" (Back 2 verts); Bigger = slower turning.
 	
@@ -20,8 +21,6 @@ public class Agent : MonoBehaviour {
 
 	[Range(0.2f, 1.0f)]
 	public float bulletSize; // The size of the bullets
-
-	public bool randomInit;
 
 	[System.Serializable]
 	public class PickupForceData {
@@ -123,6 +122,58 @@ public class Agent : MonoBehaviour {
 	}
 	public AvoidForceData avoidForceData;
 
+	[System.Serializable]
+	public class AgentForceData {
+
+		[System.Serializable]
+		public class AgentHealthForce {
+			public AnimationCurve agentHealthForceCurve;
+
+			[Range(0.0f, 1.0f)]
+			public float agentHealthForceKey1;
+			[Range(0.0f, 1.0f)]
+			public float agentHealthForceKey2;
+			[Range(0.0f, 1.0f)]
+			public float agentHealthForceKey3;
+			[Range(0.0f, 1.0f)]
+			public float agentHealthForceKey4;
+		}
+		public AgentHealthForce agentHealthForce;
+
+		[System.Serializable]
+		public class AgentDistanceForce {
+			public AnimationCurve agentDistanceForceCurve;
+
+			[Range(0.0f, 1.0f)]
+			public float agentDistanceForceKey1;
+			[Range(0.0f, 1.0f)]
+			public float agentDistanceForceKey2;
+			[Range(0.0f, 1.0f)]
+			public float agentDistanceForceKey3;
+			[Range(0.0f, 1.0f)]
+			public float agentDistanceForceKey4;
+		}
+		public AgentDistanceForce agentDistanceForce;
+
+		[System.Serializable]
+		public class AgentDirectionForce {
+			public AnimationCurve agentDirectionForceCurve;
+
+			[Range(0.0f, 1.0f)]
+			public float agentDirectionForceKey1;
+			[Range(0.0f, 1.0f)]
+			public float agentDirectionForceKey2;
+			[Range(0.0f, 1.0f)]
+			public float agentDirectionForceKey3;
+			[Range(0.0f, 1.0f)]
+			public float agentDirectionForceKey4;
+		}
+		public AgentDirectionForce agentDirectionForce;
+	}
+	public AgentForceData agentForceData;
+	public int points;
+
+	private CircleCollider2D collider;
 	private Vector3 velocity;
 	private float maxVelocity;
 	private float health;
@@ -134,13 +185,15 @@ public class Agent : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		if (randomInit) {
+		if (randInit) {
+
 			maxSteering = Random.Range(0.1f, 1.5f);
 			maxHealth = Random.Range(1.0f, 10.0f);
 			visionRadius = Random.Range(1.0f, 10.0f);
 			rateOfFire = Random.Range(1.0f, 10.0f);
 			bulletSize = Random.Range(0.2f, 1.0f);
 
+			// TODO: This can be done with reflection!
 			pickupForceData.pickupHealthForce.pickupHealthForceKey1 = Random.Range(0.0f, 1.0f);
 			pickupForceData.pickupHealthForce.pickupHealthForceKey2 = Random.Range(0.0f, 1.0f);
 			pickupForceData.pickupHealthForce.pickupHealthForceKey3 = Random.Range(0.0f, 1.0f);
@@ -166,11 +219,25 @@ public class Agent : MonoBehaviour {
 			avoidForceData.avoidDirectionForce.avoidDirectionForceKey2 = Random.Range(0.0f, 1.0f);
 			avoidForceData.avoidDirectionForce.avoidDirectionForceKey3 = Random.Range(0.0f, 1.0f);
 			avoidForceData.avoidDirectionForce.avoidDirectionForceKey4 = Random.Range(0.0f, 1.0f);
+
+			agentForceData.agentHealthForce.agentHealthForceKey1 = Random.Range(0.0f, 1.0f);
+			agentForceData.agentHealthForce.agentHealthForceKey2 = Random.Range(0.0f, 1.0f);
+			agentForceData.agentHealthForce.agentHealthForceKey3 = Random.Range(0.0f, 1.0f);
+			agentForceData.agentHealthForce.agentHealthForceKey4 = Random.Range(0.0f, 1.0f);
+			agentForceData.agentDistanceForce.agentDistanceForceKey1 = Random.Range(0.0f, 1.0f);
+			agentForceData.agentDistanceForce.agentDistanceForceKey2 = Random.Range(0.0f, 1.0f);
+			agentForceData.agentDistanceForce.agentDistanceForceKey3 = Random.Range(0.0f, 1.0f);
+			agentForceData.agentDistanceForce.agentDistanceForceKey4 = Random.Range(0.0f, 1.0f);
+			agentForceData.agentDirectionForce.agentDirectionForceKey1 = Random.Range(0.0f, 1.0f);
+			agentForceData.agentDirectionForce.agentDirectionForceKey2 = Random.Range(0.0f, 1.0f);
+			agentForceData.agentDirectionForce.agentDirectionForceKey3 = Random.Range(0.0f, 1.0f);
+			agentForceData.agentDirectionForce.agentDirectionForceKey4 = Random.Range(0.0f, 1.0f);
 		}
+
 
 		float randStartVelocity = Random.value;
 		velocity = randStartVelocity < 0.25f ? Vector3.up : randStartVelocity < 0.5 ? Vector3.left : randStartVelocity < 0.75 ? Vector3.down : Vector3.right;
-		maxVelocity = (11.0f - maxHealth) / 1.25f; // TODO: Don't like the magic numbers here
+		maxVelocity = (11.0f - maxHealth) / 1.25f; // TODO: Don't like the magic numbers
 		health = maxHealth;
 		shootTimer = 0.0f;
 
@@ -226,10 +293,22 @@ public class Agent : MonoBehaviour {
 		avoidForceData.avoidDistanceForce.avoidDistanceForceCurve = setupForceCurves(avoiddistanceforces);
 		float[] avoiddirectionforces = new float[] {avoidForceData.avoidDirectionForce.avoidDirectionForceKey1, avoidForceData.avoidDirectionForce.avoidDirectionForceKey2, avoidForceData.avoidDirectionForce.avoidDirectionForceKey3, avoidForceData.avoidDirectionForce.avoidDirectionForceKey4};
 		avoidForceData.avoidDirectionForce.avoidDirectionForceCurve = setupForceCurves(avoiddirectionforces);
+
+		float[] agenthealthforces = new float[] {agentForceData.agentHealthForce.agentHealthForceKey1, agentForceData.agentHealthForce.agentHealthForceKey2, agentForceData.agentHealthForce.agentHealthForceKey3, agentForceData.agentHealthForce.agentHealthForceKey4};
+		agentForceData.agentHealthForce.agentHealthForceCurve = setupForceCurves(agenthealthforces);
+		float[] agentdistanceforces = new float[] {agentForceData.agentDistanceForce.agentDistanceForceKey1, agentForceData.agentDistanceForce.agentDistanceForceKey2, agentForceData.agentDistanceForce.agentDistanceForceKey3, agentForceData.agentDistanceForce.agentDistanceForceKey4};
+		agentForceData.agentDistanceForce.agentDistanceForceCurve = setupForceCurves(agentdistanceforces);
+		float[] agentdirectionforces = new float[] {agentForceData.agentDirectionForce.agentDirectionForceKey1, agentForceData.agentDirectionForce.agentDirectionForceKey2, agentForceData.agentDirectionForce.agentDirectionForceKey3, agentForceData.agentDirectionForce.agentDirectionForceKey4};
+		agentForceData.agentDirectionForce.agentDirectionForceCurve = setupForceCurves(agentdirectionforces);
 		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+		points = 0;
 
 		minScreenBounds = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0));
 		maxScreenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+
+		collider = GetComponent<CircleCollider2D>();
+		collider.radius = visionRadius;
 	}
 
 	AnimationCurve setupForceCurves(float[] keyframeForces) {
@@ -256,56 +335,84 @@ public class Agent : MonoBehaviour {
 			steeringForce.z = 0.0f;
 		} else {
 
-			if (targetsInRange.Count > 0) {
-				foreach (Collider2D collider in targetsInRange) {
+			// Own collider is always counted
+			if (targetsInRange.Count > 1) {
+				foreach (Collider2D targetCollider in targetsInRange) {
 
-					GameObject target = collider.gameObject;
+					if (targetCollider != collider) {
 
-					float healthPercentage = health / maxHealth; // Between 0 and 1
-					Vector3 vectorToTarget = target.transform.position - transform.position;
-					float distance = vectorToTarget.magnitude / visionRadius; // Between 0 and 1
-					float direction =  Mathf.Abs(((((Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg) + 90) - ((Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg) + 90))) % 360) / 360; // Between 0 and 1
+						GameObject target = targetCollider.gameObject;
 
-					switch (target.tag) {
-						case "avoid":
-							float avoidForce = avoidForceData.avoidHealthForce.avoidHealthForceCurve.Evaluate(healthPercentage); // return betweens 0 and 1
-							avoidForce += avoidForceData.avoidDistanceForce.avoidDistanceForceCurve.Evaluate(distance); // return betweens 0 and 1
-							avoidForce += avoidForceData.avoidDirectionForce.avoidDirectionForceCurve.Evaluate(direction); // return betweens 0 and 1
-							avoidForce = avoidForce / 3; // get average
-							avoidForce = avoidForce * 2 - 1; // Clamp between -1 & 1
+						float healthPercentage = health / maxHealth; // Between 0 and 1
+						Vector3 vectorToTarget = target.transform.position - transform.position;
+						float distancePercentage = vectorToTarget.magnitude / visionRadius; // Between 0 and 1
+						float direction =  Mathf.Abs(((((Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg) + 90) - ((Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg) + 90))) % 360) / 360; // Between 0 and 1
 
-							steeringForce += Seek(target) * avoidForce;
-							break;
+						switch (target.tag) {
+							case "avoid":
+								float avoidForce = avoidForceData.avoidHealthForce.avoidHealthForceCurve.Evaluate(healthPercentage); // return betweens 0 and 1
+								avoidForce += avoidForceData.avoidDistanceForce.avoidDistanceForceCurve.Evaluate(distancePercentage); // return betweens 0 and 1
+								avoidForce += avoidForceData.avoidDirectionForce.avoidDirectionForceCurve.Evaluate(direction); // return betweens 0 and 1
+								avoidForce = avoidForce / 3; // get average
+								avoidForce = avoidForce * 2 - 1; // Clamp between -1 & 1
 
-						case "attract":
-							float attractForce = pickupForceData.pickupHealthForce.pickupHealthForceCurve.Evaluate(healthPercentage); // returns between 0 and 1
-							attractForce += pickupForceData.pickupDistanceForce.pickupDistanceForceCurve.Evaluate(distance); // return betweens 0 and 1
-							attractForce += pickupForceData.pickupDirectionForce.pickupDirectionForceCurve.Evaluate(direction); // return betweens 0 and 1
-							attractForce = attractForce / 3; // get average
-							attractForce = attractForce * 2 - 1; // Clamp between -1 & 1
+								steeringForce += Seek(target) * avoidForce;
 
-							steeringForce += Seek(target) * attractForce;
-							break;
+								if (vectorToTarget.magnitude <= 2) {
+									target.GetComponent<RandomPoint>().ChangePosition();
+									points -= 2;
+								}
+								break;
+
+							case "attract":
+								float attractForce = pickupForceData.pickupHealthForce.pickupHealthForceCurve.Evaluate(healthPercentage); // returns between 0 and 1
+								attractForce += pickupForceData.pickupDistanceForce.pickupDistanceForceCurve.Evaluate(distancePercentage); // return betweens 0 and 1
+								attractForce += pickupForceData.pickupDirectionForce.pickupDirectionForceCurve.Evaluate(direction); // return betweens 0 and 1
+								attractForce = attractForce / 3; // get average
+								attractForce = attractForce * 2 - 1; // Clamp between -1 & 1
+
+								steeringForce += Seek(target) * attractForce;
+
+								if (vectorToTarget.magnitude <= 2) {
+									target.GetComponent<RandomPoint>().ChangePosition();
+									points++;
+								}
+								break;
+
+							case "agent":
+								float agentForce = agentForceData.agentHealthForce.agentHealthForceCurve.Evaluate(healthPercentage); // returns between 0 and 1
+								agentForce += agentForceData.agentDistanceForce.agentDistanceForceCurve.Evaluate(distancePercentage); // return betweens 0 and 1
+								agentForce += agentForceData.agentDirectionForce.agentDirectionForceCurve.Evaluate(direction); // return betweens 0 and 1
+								agentForce = agentForce / 3; // get average
+								agentForce = agentForce * 2 - 1; // Clamp between -1 & 1
+
+								steeringForce += Seek(target) * agentForce;
+								break;
+						}
 					}
+
 				}
 			} else {
 				steeringForce += RandomSeek();
 			}
 		}
 
-		shootTimer += Time.deltaTime;
-		if (shootTimer >= rateOfFire) {
-			shootTimer = 0;
-			// SHOOT
-			GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
-			bullet.transform.localScale = Vector3.one * bulletSize;
-			bullet.GetComponent<BulletScript>().velocity = Vector3.ClampMagnitude(velocity * 3, maxVelocity * 3);
+		// shootTimer += Time.deltaTime;
+		// if (shootTimer >= rateOfFire) {
+		// 	shootTimer = 0;
 
-			// Decrease velocity by bullet size!
-			velocity *= (1.0f - bulletSize);
-			// TODO: Agents should be able to travel backwards if shooting causes negative velocity??
-		}
+		// 	// TODO: Need to check if agent should shoot, not just if the agent can shoot!
 
+		// 	// SHOOT
+		// 	GameObject bullet = Instantiate(bulletPrefab, transform.position + (Vector3.Normalize(velocity) * 1.5f), transform.rotation);
+		// 	bullet.transform.localScale = Vector3.one * bulletSize;
+		// 	bullet.GetComponent<BulletScript>().velocity = Vector3.ClampMagnitude(velocity, maxVelocity * 3);
+
+		// 	// Decrease velocity by bullet size!
+		// 	velocity -= velocity / (2.0f - bulletSize);
+		// 	velocity.z = 0.0f;
+		// 	// TODO: Agents should be able to travel backwards if shooting causes negative velocity??
+		// }
 
 		if (steeringForce.sqrMagnitude > maxSteering * maxSteering) {
 			steeringForce.Normalize();
